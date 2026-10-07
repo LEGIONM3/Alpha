@@ -1,0 +1,346 @@
+{
+  "summary": {
+    "total_beliefs": 4,
+    "contradictions_detected": 80,
+    "hypotheses_formed": 20,
+    "confidence_updates": 84
+  },
+  "belief_states": [
+    {
+      "id": "b1",
+      "content": "Python type hints reduce runtime errors",
+      "source": "python-docs.org | community usage data 2023-2024",
+      "confidence": 0.22999999999999998,
+      "evidence_count": 2
+    },
+    {
+      "id": "b2",
+      "content": "Monorepos share dependencies across projects",
+      "source": "google-eng-practices.pdf (case study: build time -60%, conflicts -85%)",
+      "confidence": 0.22999999999999998,
+      "evidence_count": 1
+    },
+    {
+      "id": "b3",
+      "content": "Tests before implementation catch design flaws early",
+      "source": "kent-beck-tdd.com | refactoring.com articles",
+      "confidence": 0.22999999999999998,
+      "evidence_count": 2
+    },
+    {
+      "id": "b4",
+      "content": "Single-responsibility functions are more maintainable",
+      "source": "refactoring.com / SOLID principles article",
+      "confidence": 0.22999999999999998,
+      "evidence_count": 1
+    }
+  ],
+  "contradictions": [
+    {
+      "belief_id": "b1",
+      "belief_content": "Python type hints reduce runtime errors",
+      "observation": "This function handles input validation, DB calls, and response formatting all in one",
+      "old_confidence": 0.83
+    },
+    {
+      "belief_id": "b2",
+      "belief_content": "Monorepos share dependencies across projects",
+      "observation": "This function handles input validation, DB calls, and response formatting all in one",
+      "old_confidence": 0.83
+    },
+    {
+      "belief_id": "b3",
+      "belief_content": "Tests before implementation catch design flaws early",
+      "observation": "This function handles input validation, DB calls, and response formatting all in one",
+      "old_confidence": 0.81
+    },
+    {
+      "belief_id": "b4",
+      "belief_content": "Single-responsibility functions are more maintainable",
+      "observation": "This function handles input validation, DB calls, and response formatting all in one",
+      "old_confidence": 0.78
+    },
+    {
+      "belief_id": "b1",
+      "belief_content": "Python type hints reduce runtime errors",
+      "observation": "Type hints in hot paths add 12 percent overhead bypassing JIT checks",
+      "old_confidence": 0.6299999999999999
+    },
+    {
+      "belief_id": "b2",
+      "belief_content": "Monorepos share dependencies across projects",
+      "observation": "Type hints in hot paths add 12 percent overhead bypassing JIT checks",
+      "old_confidence": 0.6299999999999999
+    },
+    {
+      "belief_id": "b3",
+      "belief_content": "Tests before implementation catch design flaws early",
+      "observation": "Type hints in hot paths add 12 percent overhead bypassing JIT checks",
+      "old_confidence": 0.6100000000000001
+    },
+    {
+      "belief_id": "b4",
+      "belief_content": "Single-responsibility functions are more maintainable",
+      "observation": "Type hints in hot paths add 12 percent overhead bypassing JIT checks",
+      "old_confidence": 0.5800000000000001
+    },
+    {
+      "belief_id": "b1",
+      "belief_content": "Python type hints reduce runtime errors",
+      "observation": "This function handles input validation, DB calls, and response formatting all in one",
+      "old_confidence": 0.5099999999999999
+    },
+    {
+      "belief_id": "b2",
+      "belief_content": "Monorepos share dependencies across projects",
+      "observation": "This function handles input validation, DB calls, and response formatting all in one",
+      "old_confidence": 0.5099999999999999
+    }
+  ],
+  "sample_cycles": [
+    {
+      "cycle": 1,
+      "observation": "Type hints enable IDE autocomplete reducing navigation time ",
+      "conf_changes": [],
+      "new_hypothesis_formed": null,
+      "contradictions_this_cycle": 0
+    },
+    {
+      "cycle": 2,
+      "observation": "Monorepo build time dropped from 15 minutes to 6 minutes aft",
+      "conf_changes": [
+        {
+          "belief": "b1",
+          "old_conf": 0.7,
+          "new_conf": 0.78
+        },
+        {
+          "belief": "b2",
+          "old_conf": 0.7,
+          "new_conf": 0.78
+        },
+        {
+          "belief": "b3",
+          "old_conf": 0.68,
+          "new_conf": 0.76
+        },
+        {
+          "belief": "b4",
+          "old_conf": 0.65,
+          "new_conf": 0.73
+        }
+      ],
+      "new_hypothesis_formed": null,
+      "contradictions_this_cycle": 0
+    },
+    {
+      "cycle": 3,
+      "observation": "Test before implementation caught a design flaw days early",
+      "conf_changes": [
+        {
+          "belief": "b1",
+          "old_conf": 0.78,
+          "new_conf": 0.83
+        },
+        {
+          "belief": "b2",
+          "old_conf": 0.78,
+          "new_conf": 0.83
+        },
+        {
+          "belief": "b3",
+          "old_conf": 0.76,
+          "new_conf": 0.81
+        },
+        {
+          "belief": "b4",
+          "old_conf": 0.73,
+          "new_conf": 0.78
+        }
+      ],
+      "new_hypothesis_formed": null,
+      "contradictions_this_cycle": 0
+    },
+    {
+      "cycle": 4,
+      "observation": "This function handles input validation, DB calls, and respon",
+      "conf_changes": [],
+      "new_hypothesis_formed": {
+        "cycle": 3,
+        "trigger_observation": "This function handles input validation, DB calls, and response formatt",
+        "hypothesis_content": "Hypothesis: Hot-path type hint overhead is real in JIT-compiled contexts (confidence: 0.35)",
+        "initial_confidence": 0.35
+      },
+      "contradictions_this_cycle": 1
+    },
+    {
+      "cycle": 5,
+      "observation": "Type hints in hot paths add 12 percent overhead bypassing JI",
+      "conf_changes": [],
+      "new_hypothesis_formed": {
+        "cycle": 4,
+        "trigger_observation": "Type hints in hot paths add 12 percent overhead bypassing JIT checks",
+        "hypothesis_content": "Hypothesis: Hot-path type hint overhead is real in JIT-compiled contexts (confidence: 0.35)",
+        "initial_confidence": 0.35
+      },
+      "contradictions_this_cycle": 1
+    },
+    {
+      "cycle": 6,
+      "observation": "Monorepo circular deps between services are hard to resolve ",
+      "conf_changes": [],
+      "new_hypothesis_formed": null,
+      "contradictions_this_cycle": 0
+    },
+    {
+      "cycle": 7,
+      "observation": "Writing tests after implementation was faster for this proto",
+      "conf_changes": [],
+      "new_hypothesis_formed": null,
+      "contradictions_this_cycle": 0
+    },
+    {
+      "cycle": 8,
+      "observation": "Single-resp function hid state mutation causing 3 incidents ",
+      "conf_changes": [],
+      "new_hypothesis_formed": null,
+      "contradictions_this_cycle": 0
+    },
+    {
+      "cycle": 9,
+      "observation": "File naming uses underscores while legacy code mixes camelCa",
+      "conf_changes": [],
+      "new_hypothesis_formed": null,
+      "contradictions_this_cycle": 0
+    },
+    {
+      "cycle": 10,
+      "observation": "Team prefers inline comments over docstrings despite style g",
+      "conf_changes": [],
+      "new_hypothesis_formed": null,
+      "contradictions_this_cycle": 0
+    },
+    {
+      "cycle": 11,
+      "observation": "Type hints enable IDE autocomplete reducing navigation time ",
+      "conf_changes": [],
+      "new_hypothesis_formed": null,
+      "contradictions_this_cycle": 0
+    },
+    {
+      "cycle": 12,
+      "observation": "Monorepo build time dropped from 15 minutes to 6 minutes aft",
+      "conf_changes": [
+        {
+          "belief": "b1",
+          "old_conf": 0.38,
+          "new_conf": 0.46
+        },
+        {
+          "belief": "b2",
+          "old_conf": 0.38,
+          "new_conf": 0.46
+        },
+        {
+          "belief": "b3",
+          "old_conf": 0.36,
+          "new_conf": 0.44
+        },
+        {
+          "belief": "b4",
+          "old_conf": 0.33,
+          "new_conf": 0.41
+        }
+      ],
+      "new_hypothesis_formed": null,
+      "contradictions_this_cycle": 0
+    },
+    {
+      "cycle": 13,
+      "observation": "Test before implementation caught a design flaw days early",
+      "conf_changes": [
+        {
+          "belief": "b1",
+          "old_conf": 0.46,
+          "new_conf": 0.51
+        },
+        {
+          "belief": "b2",
+          "old_conf": 0.46,
+          "new_conf": 0.51
+        },
+        {
+          "belief": "b3",
+          "old_conf": 0.44,
+          "new_conf": 0.49
+        },
+        {
+          "belief": "b4",
+          "old_conf": 0.41,
+          "new_conf": 0.46
+        }
+      ],
+      "new_hypothesis_formed": null,
+      "contradictions_this_cycle": 0
+    },
+    {
+      "cycle": 14,
+      "observation": "This function handles input validation, DB calls, and respon",
+      "conf_changes": [],
+      "new_hypothesis_formed": {
+        "cycle": 13,
+        "trigger_observation": "This function handles input validation, DB calls, and response formatt",
+        "hypothesis_content": "Hypothesis: Hot-path type hint overhead is real in JIT-compiled contexts (confidence: 0.35)",
+        "initial_confidence": 0.35
+      },
+      "contradictions_this_cycle": 1
+    },
+    {
+      "cycle": 15,
+      "observation": "Type hints in hot paths add 12 percent overhead bypassing JI",
+      "conf_changes": [],
+      "new_hypothesis_formed": {
+        "cycle": 14,
+        "trigger_observation": "Type hints in hot paths add 12 percent overhead bypassing JIT checks",
+        "hypothesis_content": "Hypothesis: Hot-path type hint overhead is real in JIT-compiled contexts (confidence: 0.35)",
+        "initial_confidence": 0.35
+      },
+      "contradictions_this_cycle": 1
+    },
+    {
+      "cycle": 16,
+      "observation": "Monorepo circular deps between services are hard to resolve ",
+      "conf_changes": [],
+      "new_hypothesis_formed": null,
+      "contradictions_this_cycle": 0
+    },
+    {
+      "cycle": 17,
+      "observation": "Writing tests after implementation was faster for this proto",
+      "conf_changes": [],
+      "new_hypothesis_formed": null,
+      "contradictions_this_cycle": 0
+    },
+    {
+      "cycle": 18,
+      "observation": "Single-resp function hid state mutation causing 3 incidents ",
+      "conf_changes": [],
+      "new_hypothesis_formed": null,
+      "contradictions_this_cycle": 0
+    },
+    {
+      "cycle": 19,
+      "observation": "File naming uses underscores while legacy code mixes camelCa",
+      "conf_changes": [],
+      "new_hypothesis_formed": null,
+      "contradictions_this_cycle": 0
+    },
+    {
+      "cycle": 20,
+      "observation": "Team prefers inline comments over docstrings despite style g",
+      "conf_changes": [],
+      "new_hypothesis_formed": null,
+      "contradictions_this_cycle": 0
+    }
+  ]
+}

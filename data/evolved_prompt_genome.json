@@ -1,0 +1,32 @@
+{
+  "domain": "database",
+  "winner_genome": {
+    "genome_id": "genome_base_general",
+    "domain": "general",
+    "generation": 1,
+    "parent_ids": [],
+    "role_directive": "You are Alpha's specialized General Intelligence Subsystem.",
+    "scaffold_mode": "chain_of_thought",
+    "format_constraint": "concise_text",
+    "negative_instructions": [
+      "Do not include conversational filler or greetings.",
+      "Do not output markdown code blocks if raw format is requested."
+    ],
+    "include_deliberation_contract": true,
+    "temperature": 0.1,
+    "fitness_score": 0.81,
+    "evaluations_count": 1,
+    "mutations_applied": [],
+    "created_at": 1791229138.3547983
+  },
+  "evolution_history": [
+    {
+      "domain": "database",
+      "winner_id": "genome_base_general",
+      "winning_fitness": 0.81,
+      "generation": 1,
+      "scaffold": "chain_of_thought"
+    }
+  ],
+  "runtime_seconds": 23.85
+}

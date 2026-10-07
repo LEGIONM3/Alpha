@@ -1,0 +1,215 @@
+{
+  "timestamp": 1791228659.286288,
+  "state_mode": "current",
+  "state_id": "current_1791228659",
+  "agents": [
+    {
+      "id": "AGENT_SYSTEM_ENG",
+      "entity_type": "agent",
+      "name": "Chief Systems Engineer",
+      "attributes": {},
+      "metadata": {},
+      "version": 1,
+      "importance": 0.9,
+      "confidence": 0.8,
+      "provenance": {
+        "creator_id": "system",
+        "creator_role": "architect",
+        "source_ids": [],
+        "derivation_method": "direct",
+        "created_at": 1791228659.286288,
+        "notes": null
+      },
+      "lifecycle_state": "active",
+      "role": "systems_engineer",
+      "runtime_id": null,
+      "fitness_score": 0.5,
+      "capability_ids": []
+    }
+  ],
+  "projects": [
+    {
+      "id": "4d5c9aa4-7451-4a5e-8dbb-cd766fbf226e",
+      "entity_type": "project",
+      "name": "Project Alpha Phase 4",
+      "attributes": {},
+      "metadata": {},
+      "version": 1,
+      "importance": 0.95,
+      "confidence": 0.95,
+      "provenance": {
+        "creator_id": "system",
+        "creator_role": "architect",
+        "source_ids": [],
+        "derivation_method": "direct",
+        "created_at": 1791228659.285288,
+        "notes": null
+      },
+      "lifecycle_state": "active",
+      "goal_ids": [
+        "c0442638-bc9c-47e9-adc4-14485145da1a"
+      ],
+      "status": "in_progress",
+      "budget_credits": 1000.0
+    }
+  ],
+  "tasks": [],
+  "goals": [
+    {
+      "id": "c0442638-bc9c-47e9-adc4-14485145da1a",
+      "entity_type": "goal",
+      "name": "Autonomous Self-Evolving Cognition",
+      "attributes": {},
+      "metadata": {},
+      "version": 1,
+      "importance": 1.0,
+      "confidence": 1.0,
+      "provenance": {
+        "creator_id": "system",
+        "creator_role": "architect",
+        "source_ids": [],
+        "derivation_method": "direct",
+        "created_at": 1791228659.285288,
+        "notes": null
+      },
+      "lifecycle_state": "active",
+      "objective": "Develop a fully grounded reality-based cognitive civilization",
+      "target_metric": "",
+      "current_value": 0.0,
+      "target_value": 1.0
+    },
+    {
+      "id": "GOAL_BOOT_01",
+      "entity_type": "goal",
+      "name": "Establish Cognitive Boot State",
+      "attributes": {},
+      "metadata": {},
+      "version": 1,
+      "importance": 1.0,
+      "confidence": 1.0,
+      "provenance": {
+        "creator_id": "system",
+        "creator_role": "architect",
+        "source_ids": [],
+        "derivation_method": "direct",
+        "created_at": 1791228659.285288,
+        "notes": null
+      },
+      "lifecycle_state": "active",
+      "objective": "Ensure all cognitive subsystems boot cleanly with local foundation model",
+      "target_metric": "",
+      "current_value": 0.0,
+      "target_value": 1.0
+    }
+  ],
+  "tools": [
+    {
+      "id": "TOOL_SANDBOX_EXEC",
+      "entity_type": "tool",
+      "name": "SecureExecutionSandbox",
+      "attributes": {},
+      "metadata": {},
+      "version": 1,
+      "importance": 0.9,
+      "confidence": 0.8,
+      "provenance": {
+        "creator_id": "system",
+        "creator_role": "architect",
+        "source_ids": [],
+        "derivation_method": "direct",
+        "created_at": 1791228659.286288,
+        "notes": null
+      },
+      "lifecycle_state": "active",
+      "tool_name": "",
+      "sandbox_level": "subprocess",
+      "permissions": [],
+      "latency_ms_avg": 0.0
+    }
+  ],
+  "skills": [],
+  "documents": [],
+  "resources": [],
+  "risks": [
+    {
+      "id": "RISK_TIMEOUT_DROP",
+      "entity_type": "risk",
+      "name": "Model Inference Timeout Risk",
+      "attributes": {},
+      "metadata": {},
+      "version": 1,
+      "importance": 0.5,
+      "confidence": 0.8,
+      "provenance": {
+        "creator_id": "system",
+        "creator_role": "architect",
+        "source_ids": [],
+        "derivation_method": "direct",
+        "created_at": 1791228659.285288,
+        "notes": null
+      },
+      "lifecycle_state": "active",
+      "severity": 0.7,
+      "likelihood": 0.1,
+      "mitigation_plan": "",
+      "impact_area": "system"
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "CAP_MODEL_REASONING",
+      "entity_type": "capability",
+      "name": "Foundation Model Reasoning",
+      "attributes": {},
+      "metadata": {},
+      "version": 1,
+      "importance": 0.95,
+      "confidence": 0.8,
+      "provenance": {
+        "creator_id": "system",
+        "creator_role": "architect",
+        "source_ids": [],
+        "derivation_method": "direct",
+        "created_at": 1791228659.285288,
+        "notes": null
+      },
+      "lifecycle_state": "active",
+      "category": "reasoning",
+      "proficiency": 0.8,
+      "constraints": []
+    }
+  ],
+  "beliefs": [
+    {
+      "belief_id": "26b81f68-956c-46f2-960c-bb25bece1505",
+      "statement": "Deterministic verification is required before committing any generative model output to world state.",
+      "confidence": 0.98,
+      "evidence": [
+        "b4e983f0-1747-45f5-bb5e-246558c32855"
+      ],
+      "sources": [],
+      "contradictions": [],
+      "verification_history": [],
+      "decay_rate": 0.005,
+      "last_validation": 1791228659.285288,
+      "lifecycle_state": "active",
+      "domain": "security"
+    },
+    {
+      "belief_id": "2a0ab40b-1ed4-42ab-a934-65d6aec74bbf",
+      "statement": "Local model gemma-4-e4b supports real-time multi-threaded cognitive inference",
+      "confidence": 0.95,
+      "evidence": [
+        "3058d33d-6511-452a-8ba9-ea1fcf7bd027"
+      ],
+      "sources": [],
+      "contradictions": [],
+      "verification_history": [],
+      "decay_rate": 0.005,
+      "last_validation": 1791228659.286288,
+      "lifecycle_state": "active",
+      "domain": "foundation_model"
+    }
+  ],
+  "predictions": []
+}

@@ -1,0 +1,1260 @@
+{
+  "total": 125,
+  "success_count": 125,
+  "total_time_s": 59.63,
+  "mean_latency_ms": 3673.2,
+  "p50_ms": 3992.7,
+  "p95_ms": 5447.8,
+  "results": [
+    {
+      "id": 1,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 5327.370166778564,
+      "tokens_in": 53,
+      "tokens_out": 150,
+      "content": "The user is presenting a syllogism:\nPremise 1: All Bloops are Razzies. (B $\\rightarrow$ R)\nPremise 2: All Razzies are Lurgs. (R $\\rightarrow$ L)\nConclusion to test: Are all Bloops definitely Lurgs? (B $\\rightarrow$ L)\n\nThis is a standard transitive property of sets/categories. If A is a subset of B, and B is a subset of C, then A must be a subset of C.\n\nIn this case, if the set of Bloops is contained within the set of Razzies, and the set of Razzies is contained within the set of Lurgs",
+      "has_reasoning": true
+    },
+    {
+      "id": 2,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 5129.506587982178,
+      "tokens_in": 54,
+      "tokens_out": 150,
+      "content": "Let B be the cost of the bat and L be the cost of the ball.\nWe are given two pieces of information:\n1) B + L = $1.10 (The total cost is $1.10)\n2) B = L + $1.00 (The bat costs $1.00 more than the ball)\n\nWe need to find the cost of the ball (L) in cents.\n\nSubstitute equation (2) into equation (1):\n(L + 1.00) + L = 1.10\n2L + 1.00 = 1.10\n2L = 1.10 - 1",
+      "has_reasoning": true
+    },
+    {
+      "id": 3,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 4928.580045700073,
+      "tokens_in": 36,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Analyze the question:** The question asks which is heavier: a pound of feathers or a pound of gold.\n2.  **Identify the key information:** Both quantities are specified as \"a pound.\"\n3.  **Determine the weight:** By definition, one pound (lb) equals one pound (lb), regardless of what substance it is.\n4.  **Formulate the answer:** They weigh the same.\n5.  **Apply the constraint:** The explanation must be in exactly one sentence.\n\n*Self-Correction/Refinement:* Ensure the tone is direct and answers the premise accurately.\n\n6.  **Final Sentence Construction:** A pound of feathers and a pound",
+      "has_reasoning": true
+    },
+    {
+      "id": 4,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 2520.2064514160156,
+      "tokens_in": 41,
+      "tokens_out": 2,
+      "content": "1",
+      "has_reasoning": false
+    },
+    {
+      "id": 5,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 2820.4774856567383,
+      "tokens_in": 47,
+      "tokens_out": 4,
+      "content": "300",
+      "has_reasoning": false
+    },
+    {
+      "id": 6,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 2641.3421630859375,
+      "tokens_in": 26,
+      "tokens_out": 2,
+      "content": "Paris",
+      "has_reasoning": false
+    },
+    {
+      "id": 7,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 2472.8431701660156,
+      "tokens_in": 27,
+      "tokens_out": 2,
+      "content": "Au",
+      "has_reasoning": false
+    },
+    {
+      "id": 8,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 2594.562530517578,
+      "tokens_in": 33,
+      "tokens_out": 7,
+      "content": "299792",
+      "has_reasoning": false
+    },
+    {
+      "id": 9,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 4917.941331863403,
+      "tokens_in": 29,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Analyze the Request:** The user wants the binary representation of the decimal number 5.\n2.  **Convert Decimal to Binary (5):**\n    *   $5 \\div 2 = 2$ remainder $1$\n    *   $2 \\div 2 = 1$ remainder $0$\n    *   $1 \\div 2 = 0$ remainder $1$\n    *   Reading the remainders upwards: 101.\n3.  **Analyze the Constraint:** The answer must be stated \"in 1 word.\"\n4.  **Format the Output:** Binary numbers are typically represented using digits (0s and",
+      "has_reasoning": true
+    },
+    {
+      "id": 10,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 3549.628257751465,
+      "tokens_in": 30,
+      "tokens_out": 48,
+      "content": "144",
+      "has_reasoning": true
+    },
+    {
+      "id": 11,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 5476.372241973877,
+      "tokens_in": 28,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Goal:** Write a Python one-liner to reverse a string `s`.\n2.  **Input:** A string variable, e.g., `s = \"hello\"`.\n3.  **Output:** The reversed string (e.g., `\"olleh\"`).\n4.  **Python Techniques for Reversal:**\n    *   Slicing: Python allows slicing with a step of `-1` (`[::-1]`). This is the most idiomatic and concise way.\n5.  **Implementation (One-liner):** `s[::-1]`\n\n6.  *(Self-Correction/Refinement):* Since the request asks for *a*",
+      "has_reasoning": true
+    },
+    {
+      "id": 12,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 5284.087896347046,
+      "tokens_in": 28,
+      "tokens_out": 150,
+      "content": "Here are a few options for a Python function to check if a number is prime, ranging from the most basic implementation to a more optimized version.\n\n## Option 1: Basic Implementation (Easy to Understand)\n\nThis method checks divisibility by every integer from 2 up to $n-1$.\n\n```python\ndef is_prime_basic(n):\n    \"\"\"\n    Checks if a number n is prime using a basic iterative approach.\n    A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself.\n    \"\"\"\n    if n <= 1:\n        return False  # Numbers less than or equal to 1 are not prime\n    \n    #",
+      "has_reasoning": false
+    },
+    {
+      "id": 13,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 3458.087682723999,
+      "tokens_in": 33,
+      "tokens_out": 7,
+      "content": "O(n log n)",
+      "has_reasoning": false
+    },
+    {
+      "id": 14,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 5063.764333724976,
+      "tokens_in": 34,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Understand the Goal:** The user wants to know how to check for the existence of a key within a Python dictionary (`d`).\n2.  **Identify Standard Methods (Python):** There are several ways, but the most idiomatic and efficient ones are:\n    *   Using the `in` operator (the preferred method).\n    *   Using `dict.get()` (though this checks for existence implicitly by returning a default value if missing).\n3.  **Select the Best/Most Direct Method:** The `in` operator is the clearest and most direct way to check for key presence.\n4.  **Format as Code Snippet Only:** Provide the code structure",
+      "has_reasoning": true
+    },
+    {
+      "id": 15,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 5699.382305145264,
+      "tokens_in": 29,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Goal:** Write a Python list comprehension.\n2.  **Task:** Filter even numbers.\n3.  **Input:** A list of numbers (let's call it `numbers`).\n4.  **Condition for Evenness:** A number is even if the remainder when divided by 2 is 0 (`number % 2 == 0`).\n5.  **Structure of List Comprehension:** `[expression for item in iterable if condition]`\n\n*   `iterable`: `numbers`\n*   `item`: `n` (or any variable name)\n*   `condition`: `n % 2 == 0`\n*   `expression`:",
+      "has_reasoning": true
+    },
+    {
+      "id": 16,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 3280.4720401763916,
+      "tokens_in": 38,
+      "tokens_out": 25,
+      "content": "```json\n{\n  \"status\": \"ok\",\n  \"count\": 42\n}\n```",
+      "has_reasoning": false
+    },
+    {
+      "id": 17,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 3719.982147216797,
+      "tokens_in": 36,
+      "tokens_out": 85,
+      "content": "```json\n{\n  \"verified\": true,\n  \"system\": \"Alpha\"\n}\n```",
+      "has_reasoning": true
+    },
+    {
+      "id": 18,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 2880.9149265289307,
+      "tokens_in": 40,
+      "tokens_out": 27,
+      "content": "```json\n{\n  \"priority\": \"HIGH\",\n  \"score\": 0.95\n}\n```",
+      "has_reasoning": false
+    },
+    {
+      "id": 19,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 2751.3375282287598,
+      "tokens_in": 38,
+      "tokens_out": 26,
+      "content": "```json\n{\n  \"action\": \"EXECUTE\",\n  \"target\": \"sandbox\"\n}\n```",
+      "has_reasoning": false
+    },
+    {
+      "id": 20,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 4071.2130069732666,
+      "tokens_in": 39,
+      "tokens_out": 96,
+      "content": "```json\n{\n  \"verdict\": \"APPROVED\",\n  \"risk_level\": 1\n}\n```",
+      "has_reasoning": true
+    },
+    {
+      "id": 21,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2398.646116256714,
+      "tokens_in": 29,
+      "tokens_out": 3,
+      "content": "No.",
+      "has_reasoning": false
+    },
+    {
+      "id": 22,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2268.238067626953,
+      "tokens_in": 27,
+      "tokens_out": 5,
+      "content": "1945",
+      "has_reasoning": false
+    },
+    {
+      "id": 23,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2228.6834716796875,
+      "tokens_in": 29,
+      "tokens_out": 2,
+      "content": "Yes",
+      "has_reasoning": false
+    },
+    {
+      "id": 24,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 4682.341575622559,
+      "tokens_in": 31,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Analyze the Request:** The user is asking if humans can survive without oxygen for one hour, and requires a \"Yes\" or \"No\" answer.\n2.  **Determine Biological Reality (Human Respiration):** Humans require oxygen to fuel cellular respiration. Without it, cells begin to suffer anaerobic metabolism, leading to lactic acid buildup and eventual organ failure.\n3.  **Establish Timeframe:** The timeframe is 1 hour (60 minutes).\n4.  **Evaluate Survival Time:** While the body has reserves (blood oxygen saturation), consciousness begins to fade rapidly after a few minutes of severe hypoxia. Unconsciousness typically occurs within 2-5 minutes, and irreversible brain damage",
+      "has_reasoning": true
+    },
+    {
+      "id": 25,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2187.8249645233154,
+      "tokens_in": 25,
+      "tokens_out": 3,
+      "content": "William Shakespeare",
+      "has_reasoning": false
+    },
+    {
+      "id": 26,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 2164.7109985351562,
+      "tokens_in": 53,
+      "tokens_out": 2,
+      "content": "Yes",
+      "has_reasoning": false
+    },
+    {
+      "id": 27,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 4600.2843379974365,
+      "tokens_in": 54,
+      "tokens_out": 150,
+      "content": "Let B be the cost of the bat and L be the cost of the ball.\nWe are given two pieces of information:\n1) B + L = $1.10 (The total cost is $1.10)\n2) B = L + $1.00 (The bat costs $1.00 more than the ball)\n\nSubstitute (2) into (1):\n(L + 1.00) + L = 1.10\n2L + 1.00 = 1.10\n2L = 1.10 - 1.00\n2L = 0.10\nL = 0.",
+      "has_reasoning": true
+    },
+    {
+      "id": 28,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 4722.691774368286,
+      "tokens_in": 36,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Analyze the question:** The core comparison is \"a pound of feathers\" vs. \"a pound of gold.\"\n2.  **Identify the key metric:** Both are specified as weighing one pound (lb).\n3.  **Determine the answer:** Since they both weigh exactly one pound, they weigh the same.\n4.  **Fulfill the constraint:** The explanation must be in exactly one sentence.\n5.  **Draft the sentence:** They weigh the same because both are specified as being a pound. (Refining for conciseness and clarity).\n\n*Self-Correction/Review:* Does this answer the question directly and meet the constraints? Yes.\n\n6.",
+      "has_reasoning": true
+    },
+    {
+      "id": 29,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 2188.857078552246,
+      "tokens_in": 41,
+      "tokens_out": 2,
+      "content": "1",
+      "has_reasoning": false
+    },
+    {
+      "id": 30,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 2186.839818954468,
+      "tokens_in": 47,
+      "tokens_out": 4,
+      "content": "300",
+      "has_reasoning": false
+    },
+    {
+      "id": 31,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 2171.1463928222656,
+      "tokens_in": 26,
+      "tokens_out": 2,
+      "content": "Paris",
+      "has_reasoning": false
+    },
+    {
+      "id": 32,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 2181.462287902832,
+      "tokens_in": 27,
+      "tokens_out": 2,
+      "content": "Au",
+      "has_reasoning": false
+    },
+    {
+      "id": 33,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 2274.1847038269043,
+      "tokens_in": 33,
+      "tokens_out": 7,
+      "content": "299792",
+      "has_reasoning": false
+    },
+    {
+      "id": 34,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 4696.699619293213,
+      "tokens_in": 29,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Analyze the Request:** The user wants the binary representation of the decimal number 5.\n2.  **Convert Decimal to Binary (5):**\n    *   $5 \\div 2 = 2$ remainder $1$\n    *   $2 \\div 2 = 1$ remainder $0$\n    *   $1 \\div 2 = 0$ remainder $1$\n    *   Reading the remainders upwards: 101.\n3.  **Analyze the Constraint:** The answer must be stated \"in 1 word.\"\n4.  **Format the Output:** Binary numbers are typically represented using digits (0s and",
+      "has_reasoning": true
+    },
+    {
+      "id": 35,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 2252.319812774658,
+      "tokens_in": 30,
+      "tokens_out": 4,
+      "content": "144",
+      "has_reasoning": false
+    },
+    {
+      "id": 36,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 4523.442268371582,
+      "tokens_in": 28,
+      "tokens_out": 150,
+      "content": "Here's a thinking process for generating the best Python one-liner to reverse a string:\n\n1.  **Understand the Goal:** The request is to write a *Python one-liner* that reverses a given string `s`.\n2.  **Identify Standard Python Techniques:** How do you reverse sequences (like strings or lists) in Python?\n    *   Slicing (`[start:stop:step]`) is the most idiomatic and concise way.\n    *   `reversed()` function combined with `join()`.\n3.  **Evaluate Slicing (The Best Option):**\n    *   To reverse a sequence, you need a step of `-1`.\n    *",
+      "has_reasoning": true
+    },
+    {
+      "id": 37,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 4598.685264587402,
+      "tokens_in": 28,
+      "tokens_out": 150,
+      "content": "Here are a few options for writing a Python function to check if a number is prime, ranging from the most basic implementation to a more optimized one.\n\n## Option 1: Basic Implementation (Easy to Understand)\n\nThis method checks divisibility by every integer from 2 up to $n-1$.\n\n```python\ndef is_prime_basic(n):\n    \"\"\"\n    Checks if a number n is prime using basic trial division.\n    A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself.\n    \"\"\"\n    if n <= 1:\n        return False  # Numbers less than or equal to 1 are not prime\n    \n    for",
+      "has_reasoning": false
+    },
+    {
+      "id": 38,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 2218.517065048218,
+      "tokens_in": 33,
+      "tokens_out": 7,
+      "content": "O(n log n)",
+      "has_reasoning": false
+    },
+    {
+      "id": 39,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 4722.087621688843,
+      "tokens_in": 34,
+      "tokens_out": 150,
+      "content": "```python\nkey_",
+      "has_reasoning": true
+    },
+    {
+      "id": 40,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 5571.484327316284,
+      "tokens_in": 29,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Goal:** Write a Python list comprehension.\n2.  **Task:** Filter even numbers.\n3.  **Input (Implicit):** A list of numbers (e.g., `numbers = [1, 2, 3, 4]`).\n4.  **Condition for Evenness:** A number `n` is even if `n % 2 == 0`.\n5.  **Structure of List Comprehension:** `[expression for item in iterable if condition]`\n\n*   *Expression:* The item itself (`x`).\n*   *Item/Iterable:* The input list (`numbers`).\n*   *Condition:* `x % 2",
+      "has_reasoning": true
+    },
+    {
+      "id": 41,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 3992.7260875701904,
+      "tokens_in": 38,
+      "tokens_out": 25,
+      "content": "```json\n{\n  \"status\": \"ok\",\n  \"count\": 42\n}\n```",
+      "has_reasoning": false
+    },
+    {
+      "id": 42,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 4919.652938842773,
+      "tokens_in": 36,
+      "tokens_out": 85,
+      "content": "```json\n{\n  \"verified\": true,\n  \"system\": \"Alpha\"\n}\n```",
+      "has_reasoning": true
+    },
+    {
+      "id": 43,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 4774.703025817871,
+      "tokens_in": 40,
+      "tokens_out": 99,
+      "content": "```json\n{\n  \"priority\": \"HIGH\",\n  \"score\": 0.95\n}\n```",
+      "has_reasoning": true
+    },
+    {
+      "id": 44,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 4108.8197231292725,
+      "tokens_in": 38,
+      "tokens_out": 97,
+      "content": "```json\n{\n  \"action\": \"EXECUTE\",\n  \"target\": \"sandbox\"\n}\n```",
+      "has_reasoning": true
+    },
+    {
+      "id": 45,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 3746.6771602630615,
+      "tokens_in": 39,
+      "tokens_out": 91,
+      "content": "```json\n{\n  \"verdict\": \"APPROVED\",\n  \"risk_level\": 1\n}\n```",
+      "has_reasoning": true
+    },
+    {
+      "id": 46,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2185.0688457489014,
+      "tokens_in": 29,
+      "tokens_out": 3,
+      "content": "No.",
+      "has_reasoning": false
+    },
+    {
+      "id": 47,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2186.6252422332764,
+      "tokens_in": 27,
+      "tokens_out": 5,
+      "content": "1945",
+      "has_reasoning": false
+    },
+    {
+      "id": 48,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2215.545415878296,
+      "tokens_in": 29,
+      "tokens_out": 2,
+      "content": "Yes",
+      "has_reasoning": false
+    },
+    {
+      "id": 49,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 4456.839084625244,
+      "tokens_in": 31,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Analyze the Request:** The user is asking if humans can survive without oxygen for 1 hour, and requires a \"Yes\" or \"No\" answer.\n2.  **Determine Biological Fact:** How long can a human survive without oxygen (anoxia)?\n    *   The brain begins to suffer irreversible damage within minutes (typically 3-5 minutes).\n    *   Survival time varies greatly depending on metabolic rate, temperature, and whether the person is breathing residual air or completely deprived.\n    *   However, for *survival* in a conscious, functional sense, 1 hour is far too long without oxygen.\n    *   Even if the body enters extreme anaerobic metabolism",
+      "has_reasoning": true
+    },
+    {
+      "id": 50,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2200.5412578582764,
+      "tokens_in": 25,
+      "tokens_out": 3,
+      "content": "William Shakespeare",
+      "has_reasoning": false
+    },
+    {
+      "id": 51,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 4513.829231262207,
+      "tokens_in": 53,
+      "tokens_out": 150,
+      "content": "The user is presenting a syllogism:\nPremise 1: All Bloops are Razzies. (B $\\rightarrow$ R)\nPremise 2: All Razzies are Lurgs. (R $\\rightarrow$ L)\nConclusion to test: Are all Bloops definitely Lurgs? (B $\\rightarrow$ L)\n\nThis is a classic transitive property of implication (A $\\rightarrow$ B and B $\\rightarrow$ C implies A $\\rightarrow$ C).\n\nIf every member of set B is in set R, and every member of set R is in set L, then every member of set B must be in set L.\n\nThe conclusion is logically sound based on the premises.",
+      "has_reasoning": true
+    },
+    {
+      "id": 52,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 4692.920684814453,
+      "tokens_in": 54,
+      "tokens_out": 150,
+      "content": "Let B be the cost of the bat and L be the cost of the ball.\n\nWe are given two pieces of information:\n1) The total cost is $1.10: $B + L = 1.10$\n2) The bat costs $1.00 more than the ball: $B = L + 1.00$\n\nSubstitute (2) into (1):\n$(L + 1.00) + L = 1.10$\n$2L + 1.00 = 1.10$\n$2L = 1.10 - 1.00$\n$2L = 0.",
+      "has_reasoning": true
+    },
+    {
+      "id": 53,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 4701.519966125488,
+      "tokens_in": 36,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Analyze the question:** The question asks which is heavier: a pound of feathers or a pound of gold.\n2.  **Identify the key information:** Both quantities are specified as \"a pound.\"\n3.  **Determine the answer based on definition:** A pound is a unit of weight/mass. If both items weigh one pound, they weigh the same.\n4.  **Fulfill the constraint:** The explanation must be in exactly 1 sentence.\n5.  **Draft the sentence:** They weigh the same because both are defined as being one pound. (Refining for conciseness and directness).\n\n*Self-Correction/Review:* Does this answer the",
+      "has_reasoning": true
+    },
+    {
+      "id": 54,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 5019.21534538269,
+      "tokens_in": 41,
+      "tokens_out": 89,
+      "content": "1",
+      "has_reasoning": true
+    },
+    {
+      "id": 55,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 4004.3513774871826,
+      "tokens_in": 47,
+      "tokens_out": 4,
+      "content": "300",
+      "has_reasoning": false
+    },
+    {
+      "id": 56,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 3533.3337783813477,
+      "tokens_in": 26,
+      "tokens_out": 2,
+      "content": "Paris",
+      "has_reasoning": false
+    },
+    {
+      "id": 57,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 3133.857488632202,
+      "tokens_in": 27,
+      "tokens_out": 2,
+      "content": "Au",
+      "has_reasoning": false
+    },
+    {
+      "id": 58,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 2377.385377883911,
+      "tokens_in": 33,
+      "tokens_out": 7,
+      "content": "299792",
+      "has_reasoning": false
+    },
+    {
+      "id": 59,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 4436.0668659210205,
+      "tokens_in": 29,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Analyze the Request:** The user wants the binary representation of the decimal number 5.\n2.  **Determine the Binary Representation (Decimal to Binary):**\n    *   $5 \\div 2 = 2$ remainder $1$\n    *   $2 \\div 2 = 1$ remainder $0$\n    *   $1 \\div 2 = 0$ remainder $1$\n    *   Reading the remainders upwards: $101$.\n3.  **Analyze the Constraint:** The answer must be stated \"in 1 word.\"\n4.  **Format the Output:** Since binary numbers are sequences of digits (0",
+      "has_reasoning": true
+    },
+    {
+      "id": 60,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 2210.024356842041,
+      "tokens_in": 30,
+      "tokens_out": 4,
+      "content": "144",
+      "has_reasoning": false
+    },
+    {
+      "id": 61,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 4546.88286781311,
+      "tokens_in": 28,
+      "tokens_out": 150,
+      "content": "Here's a thinking process for generating the best Python one-liners to reverse a string:\n\n1.  **Understand the Goal:** The request is to write a *Python one-liner* to *reverse a string* `s`.\n\n2.  **Identify Standard Python Techniques (The most idiomatic way):**\n    *   Slicing (`[::-1]`) is the canonical, fastest, and most readable way in Python. This should be the primary answer.\n\n3.  **Consider Alternatives (For completeness or specific constraints):**\n    *   `reversed()` function + `join()`: You can reverse an iterable using `reversed()`, but since strings are immutable, you must join the resulting",
+      "has_reasoning": true
+    },
+    {
+      "id": 62,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 4648.869037628174,
+      "tokens_in": 28,
+      "tokens_out": 150,
+      "content": "Here's a thinking process that leads to the suggested solutions:\n\n1.  **Understand the Goal:** The request is to write a Python function (`is_prime`) that takes an integer and returns `True` if it's prime, and `False` otherwise.\n\n2.  **Define \"Prime Number\":** A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself.\n    *   Examples: 2, 3, 5, 7, 11...\n    *   Non-examples: 1 (not prime), 4 (divisible by 2), 6 (divisible by 2 and 3).",
+      "has_reasoning": true
+    },
+    {
+      "id": 63,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 2227.668046951294,
+      "tokens_in": 33,
+      "tokens_out": 7,
+      "content": "O(n log n)",
+      "has_reasoning": false
+    },
+    {
+      "id": 64,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 4797.471523284912,
+      "tokens_in": 34,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Understand the Goal:** The user wants to know how to check for the existence of a key within a Python dictionary (`d`).\n2.  **Identify the Primary Method (Pythonic way):** The most idiomatic and efficient way is using the `in` operator.\n3.  **Formulate the Code Snippet:**\n    *   Define a sample dictionary (`d`).\n    *   Use the `if key in d:` structure.\n4.  **Refine (Provide options for completeness):** While `in` is best, mentioning `.get()` or `try/except` might be useful depending on context, but since the request asks for *checking existence",
+      "has_reasoning": true
+    },
+    {
+      "id": 65,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 6408.600091934204,
+      "tokens_in": 29,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Goal:** Write a Python list comprehension.\n2.  **Task:** Filter even numbers.\n3.  **Input (Implicit):** A list of numbers (e.g., `numbers = [1, 2, 3, 4, 5]`).\n4.  **Condition for Evenness:** A number `n` is even if `n % 2 == 0`.\n5.  **List Comprehension Structure:** `[expression for item in iterable if condition]`\n\n*   *Expression:* The item itself (`x`).\n*   *Item/Iterable:* The input list (`numbers`).\n*   *Condition:* Check for even",
+      "has_reasoning": true
+    },
+    {
+      "id": 66,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 4848.081588745117,
+      "tokens_in": 38,
+      "tokens_out": 91,
+      "content": "```json\n{\n  \"status\": \"ok\",\n  \"count\": 42\n}\n```",
+      "has_reasoning": true
+    },
+    {
+      "id": 67,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 4122.074842453003,
+      "tokens_in": 36,
+      "tokens_out": 82,
+      "content": "```json\n{\n  \"verified\": true,\n  \"system\": \"Alpha\"\n}\n```",
+      "has_reasoning": true
+    },
+    {
+      "id": 68,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 4415.683746337891,
+      "tokens_in": 40,
+      "tokens_out": 96,
+      "content": "```json\n{\n  \"priority\": \"HIGH\",\n  \"score\": 0.95\n}\n```",
+      "has_reasoning": true
+    },
+    {
+      "id": 69,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 3711.9174003601074,
+      "tokens_in": 38,
+      "tokens_out": 82,
+      "content": "```json\n{\n  \"action\": \"EXECUTE\",\n  \"target\": \"sandbox\"\n}\n```",
+      "has_reasoning": true
+    },
+    {
+      "id": 70,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 4728.2068729400635,
+      "tokens_in": 39,
+      "tokens_out": 150,
+      "content": "```json\n{\n  \"verdict\": \"APPROVED\",\n  \"risk_",
+      "has_reasoning": true
+    },
+    {
+      "id": 71,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2261.3863945007324,
+      "tokens_in": 29,
+      "tokens_out": 3,
+      "content": "No.",
+      "has_reasoning": false
+    },
+    {
+      "id": 72,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2222.317695617676,
+      "tokens_in": 27,
+      "tokens_out": 5,
+      "content": "1945",
+      "has_reasoning": false
+    },
+    {
+      "id": 73,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2243.1089878082275,
+      "tokens_in": 29,
+      "tokens_out": 2,
+      "content": "Yes",
+      "has_reasoning": false
+    },
+    {
+      "id": 74,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 4699.612379074097,
+      "tokens_in": 31,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Analyze the Request:** The user is asking if humans can survive without oxygen for 1 hour, and requires a \"Yes\" or \"No\" answer.\n2.  **Determine Biological Reality (Human Respiration):** Humans require oxygen to sustain cellular respiration. When deprived of oxygen (anoxia/hypoxia), the body rapidly depletes its energy reserves and begins to suffer damage.\n3.  **Evaluate Timeframe (1 hour):**\n    *   Initial stages (minutes): The body attempts to compensate (increased heart rate, breathing effort).\n    *   Mid-stages (15\u201330 minutes): Significant hypoxia sets in; cognitive function declines rapidly.",
+      "has_reasoning": true
+    },
+    {
+      "id": 75,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2154.9220085144043,
+      "tokens_in": 25,
+      "tokens_out": 3,
+      "content": "William Shakespeare",
+      "has_reasoning": false
+    },
+    {
+      "id": 76,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 2196.5889930725098,
+      "tokens_in": 53,
+      "tokens_out": 2,
+      "content": "Yes",
+      "has_reasoning": false
+    },
+    {
+      "id": 77,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 4771.5184688568115,
+      "tokens_in": 54,
+      "tokens_out": 150,
+      "content": "Let B be the cost of the bat and L be the cost of the ball.\n\nWe are given two pieces of information:\n1) The total cost is $1.10: $B + L = 1.10$\n2) The bat costs $1.00 more than the ball: $B = L + 1.00$\n\nSubstitute (2) into (1):\n$(L + 1.00) + L = 1.10$\n$2L + 1.00 = 1.10$\n$2L = 1.10 - 1.00$\n$2L = 0.",
+      "has_reasoning": true
+    },
+    {
+      "id": 78,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 4729.9933433532715,
+      "tokens_in": 36,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Analyze the question:** The question asks which is heavier: a pound of feathers or a pound of gold.\n2.  **Identify the key variable:** Both items are specified as \"a pound.\"\n3.  **Determine the weight:** A pound is a unit of weight (mass). Therefore, one pound of anything weighs exactly one pound.\n4.  **Formulate the answer:** They weigh the same.\n5.  **Constraint check:** The explanation must be in 1 sentence.\n\n*Self-Correction/Refinement:* Ensure the tone is direct and answers the premise accurately.\n\n6.  **Final Answer Construction:** A pound of feathers weighs exactly the same",
+      "has_reasoning": true
+    },
+    {
+      "id": 79,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 2187.742233276367,
+      "tokens_in": 41,
+      "tokens_out": 2,
+      "content": "1",
+      "has_reasoning": false
+    },
+    {
+      "id": 80,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 2209.38777923584,
+      "tokens_in": 47,
+      "tokens_out": 4,
+      "content": "300",
+      "has_reasoning": false
+    },
+    {
+      "id": 81,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 2191.251039505005,
+      "tokens_in": 26,
+      "tokens_out": 2,
+      "content": "Paris",
+      "has_reasoning": false
+    },
+    {
+      "id": 82,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 2270.85280418396,
+      "tokens_in": 27,
+      "tokens_out": 2,
+      "content": "Au",
+      "has_reasoning": false
+    },
+    {
+      "id": 83,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 2291.3992404937744,
+      "tokens_in": 33,
+      "tokens_out": 7,
+      "content": "299792",
+      "has_reasoning": false
+    },
+    {
+      "id": 84,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 4619.104862213135,
+      "tokens_in": 29,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Analyze the Request:** The user wants the binary representation of the decimal number 5.\n2.  **Constraint Check:** The answer must be stated \"in 1 word.\"\n3.  **Convert Decimal 5 to Binary:**\n    *   $5 \\div 2 = 2$ remainder $1$\n    *   $2 \\div 2 = 1$ remainder $0$\n    *   $1 \\div 2 = 0$ remainder $1$\n    *   Reading the remainders upwards: 101.\n4.  **Format as a Single Word:** The binary string \"101\" is typically presented",
+      "has_reasoning": true
+    },
+    {
+      "id": 85,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 2185.38761138916,
+      "tokens_in": 30,
+      "tokens_out": 4,
+      "content": "144",
+      "has_reasoning": false
+    },
+    {
+      "id": 86,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 4741.692543029785,
+      "tokens_in": 28,
+      "tokens_out": 150,
+      "content": "Here's a thinking process for generating the Python one-liner:\n\n1.  **Goal:** Reverse a string `s` using a single line of Python code.\n2.  **Input:** A string, e.g., `s = \"hello\"`.\n3.  **Desired Output:** The reversed string, e.g., `\"olleh\"`.\n4.  **Python Techniques for Reversal:**\n    *   **Slicing (The most idiomatic way):** Python allows slicing with the format `[start:stop:step]`. If we use a step of `-1`, it iterates backward through the sequence.\n        *   `s[::-1]`\n5.",
+      "has_reasoning": true
+    },
+    {
+      "id": 87,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 4823.78625869751,
+      "tokens_in": 28,
+      "tokens_out": 150,
+      "content": "Here are a few options for a Python function to check if a number is prime, ranging from the basic implementation to a more optimized version.\n\n## Option 1: Basic Implementation (Easy to Understand)\n\nThis method checks divisibility by every integer from 2 up to $n-1$.\n\n```python\ndef is_prime_basic(n):\n    \"\"\"\n    Checks if an integer n is a prime number using basic iteration.\n    A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself.\n    \"\"\"\n    if n <= 1:\n        return False  # Numbers less than or equal to 1 are not prime\n    \n    for i",
+      "has_reasoning": false
+    },
+    {
+      "id": 88,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 2255.9287548065186,
+      "tokens_in": 33,
+      "tokens_out": 7,
+      "content": "O(n log n)",
+      "has_reasoning": false
+    },
+    {
+      "id": 89,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 5065.689325332642,
+      "tokens_in": 34,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Understand the Goal:** The user wants to know how to check for the existence of a key within a Python dictionary (`d`).\n2.  **Identify the Primary Method (Pythonic way):** The `in` operator is the standard, most readable, and fastest way.\n3.  **Formulate the Code Snippet (Example 1 - Standard):**\n    ```python\n    key_to_check = 'some_key'\n    if key_to_check in d:\n        print(\"Key exists\")\n    ```\n4.  **Identify Alternative Methods (Less common but valid):**\n    *   `d.get(key)`",
+      "has_reasoning": true
+    },
+    {
+      "id": 90,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 5773.719072341919,
+      "tokens_in": 29,
+      "tokens_out": 150,
+      "content": "Here's a thinking process for generating the answer:\n\n1.  **Understand the Goal:** The request is to write a Python *list comprehension* that filters out only the *even numbers* from an existing list of numbers.\n\n2.  **Identify the Input:** I need a sample input list (e.g., `numbers = [1, 2, 3, 4, 5, 6]`) to make the code runnable and clear.\n\n3.  **Determine the Filtering Logic (The Condition):**\n    *   How do you check if a number is even in Python? Use the modulo operator (`%`).\n    *   A number `n` is even if `",
+      "has_reasoning": true
+    },
+    {
+      "id": 91,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 5381.277084350586,
+      "tokens_in": 38,
+      "tokens_out": 67,
+      "content": "```json\n{\n  \"status\": \"ok\",\n  \"count\": 42\n}\n```",
+      "has_reasoning": true
+    },
+    {
+      "id": 92,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 4945.614576339722,
+      "tokens_in": 36,
+      "tokens_out": 84,
+      "content": "```json\n{\n  \"verified\": true,\n  \"system\": \"Alpha\"\n}\n```",
+      "has_reasoning": true
+    },
+    {
+      "id": 93,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 4978.551149368286,
+      "tokens_in": 40,
+      "tokens_out": 96,
+      "content": "```json\n{\n  \"priority\": \"HIGH\",\n  \"score\": 0.95\n}\n```",
+      "has_reasoning": true
+    },
+    {
+      "id": 94,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 3486.717462539673,
+      "tokens_in": 38,
+      "tokens_out": 26,
+      "content": "```json\n{\n  \"action\": \"EXECUTE\",\n  \"target\": \"sandbox\"\n}\n```",
+      "has_reasoning": false
+    },
+    {
+      "id": 95,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 4811.544179916382,
+      "tokens_in": 39,
+      "tokens_out": 144,
+      "content": "```json\n{\n  \"verdict\": \"APPROVED\",\n  \"risk_level\": 1\n}\n```",
+      "has_reasoning": true
+    },
+    {
+      "id": 96,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2227.965831756592,
+      "tokens_in": 29,
+      "tokens_out": 3,
+      "content": "No.",
+      "has_reasoning": false
+    },
+    {
+      "id": 97,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2315.9687519073486,
+      "tokens_in": 27,
+      "tokens_out": 5,
+      "content": "1945",
+      "has_reasoning": false
+    },
+    {
+      "id": 98,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2181.9958686828613,
+      "tokens_in": 29,
+      "tokens_out": 2,
+      "content": "Yes",
+      "has_reasoning": false
+    },
+    {
+      "id": 99,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 4524.181365966797,
+      "tokens_in": 31,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Analyze the Request:** The user is asking if humans can survive without oxygen for one hour, and requires a \"Yes\" or \"No\" answer.\n2.  **Determine Biological Fact (Human Respiration/Oxygen):** Humans require oxygen to sustain cellular respiration. Without it, cells begin to suffer anaerobic stress, leading to lactic acid buildup and eventual organ failure.\n3.  **Estimate Survival Time:**\n    *   The body can survive for minutes without oxygen (depending on the individual and circumstances).\n    *   Consciousness is usually lost within 3-5 minutes.\n    *   Brain damage begins rapidly.\n    *   Survival beyond 10-",
+      "has_reasoning": true
+    },
+    {
+      "id": 100,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2186.918020248413,
+      "tokens_in": 25,
+      "tokens_out": 3,
+      "content": "William Shakespeare",
+      "has_reasoning": false
+    },
+    {
+      "id": 101,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 4588.973045349121,
+      "tokens_in": 53,
+      "tokens_out": 149,
+      "content": "Yes",
+      "has_reasoning": true
+    },
+    {
+      "id": 102,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 4665.729999542236,
+      "tokens_in": 54,
+      "tokens_out": 150,
+      "content": "Let B be the cost of the bat and L be the cost of the ball.\nWe are given two pieces of information:\n1) B + L = $1.10\n2) B = L + $1.00\n\nSubstitute (2) into (1):\n(L + $1.00) + L = $1.10\n2L + $1.00 = $1.10\n2L = $1.10 - $1.00\n2L = $0.10\nL = $0.05\n\nThe question asks for the cost of the ball in cents.\n$0.05 is 5 cents",
+      "has_reasoning": true
+    },
+    {
+      "id": 103,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 4840.142726898193,
+      "tokens_in": 36,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Analyze the question:** The question asks which is heavier: a pound of feathers or a pound of gold.\n2.  **Identify the key variable:** Both items are specified as \"a pound.\"\n3.  **Determine the weight:** A pound is a unit of weight (mass). Therefore, one pound of anything weighs exactly one pound.\n4.  **Formulate the answer:** They weigh the same.\n5.  **Apply the constraint:** The explanation must be in 1 sentence.\n\n*Self-Correction/Refinement:* Ensure the answer directly addresses the premise while being concise.\n\n6.  **Final Answer Construction:** They weigh exactly the same because both",
+      "has_reasoning": true
+    },
+    {
+      "id": 104,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 5167.533159255981,
+      "tokens_in": 41,
+      "tokens_out": 95,
+      "content": "1",
+      "has_reasoning": true
+    },
+    {
+      "id": 105,
+      "cat": "reasoning",
+      "success": true,
+      "latency_ms": 3477.576732635498,
+      "tokens_in": 47,
+      "tokens_out": 4,
+      "content": "180",
+      "has_reasoning": false
+    },
+    {
+      "id": 106,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 3127.6919841766357,
+      "tokens_in": 26,
+      "tokens_out": 2,
+      "content": "Paris",
+      "has_reasoning": false
+    },
+    {
+      "id": 107,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 2531.1636924743652,
+      "tokens_in": 27,
+      "tokens_out": 2,
+      "content": "Au",
+      "has_reasoning": false
+    },
+    {
+      "id": 108,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 2359.846830368042,
+      "tokens_in": 33,
+      "tokens_out": 7,
+      "content": "299792",
+      "has_reasoning": false
+    },
+    {
+      "id": 109,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 4513.605117797852,
+      "tokens_in": 29,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Analyze the Request:** The user wants the binary representation of the decimal number 5.\n2.  **Determine the Binary Conversion (Decimal 5):**\n    *   $5 / 2 = 2$ remainder $1$\n    *   $2 / 2 = 1$ remainder $0$\n    *   $1 / 2 = 0$ remainder $1$\n    *   Reading the remainders upwards: 101.\n3.  **Analyze the Constraint:** The answer must be stated \"in 1 word.\"\n4.  **Format the Output:** Binary numbers are typically represented as strings of '0's",
+      "has_reasoning": true
+    },
+    {
+      "id": 110,
+      "cat": "consistency",
+      "success": true,
+      "latency_ms": 2203.227758407593,
+      "tokens_in": 30,
+      "tokens_out": 4,
+      "content": "144",
+      "has_reasoning": false
+    },
+    {
+      "id": 111,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 4592.328071594238,
+      "tokens_in": 28,
+      "tokens_out": 150,
+      "content": "```python",
+      "has_reasoning": true
+    },
+    {
+      "id": 112,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 4707.433223724365,
+      "tokens_in": 28,
+      "tokens_out": 150,
+      "content": "Here are a few options for a Python function to check if a number is prime, ranging from the most straightforward (basic) to more optimized versions.\n\n## Option 1: Basic and Easy-to-Understand Implementation\n\nThis version checks divisibility by every integer from 2 up to $n-1$. It's simple but not the fastest for very large numbers.\n\n```python\ndef is_prime_basic(n):\n    \"\"\"\n    Checks if a number n is prime using a basic loop (up to n-1).\n    \"\"\"\n    # Numbers less than or equal to 1 are not prime\n    if n <= 1:\n        return False\n    \n    # 2 is the",
+      "has_reasoning": false
+    },
+    {
+      "id": 113,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 2237.842321395874,
+      "tokens_in": 33,
+      "tokens_out": 7,
+      "content": "O(n log n)",
+      "has_reasoning": false
+    },
+    {
+      "id": 114,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 4773.668527603149,
+      "tokens_in": 34,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Understand the Goal:** The user wants to know how to check for the existence of a key within a Python dictionary (`d`).\n2.  **Identify the Primary Method (Pythonic way):** The `in` operator is the standard, most readable, and fastest way.\n3.  **Formulate the Code Snippet (using `in`):** `key in d`\n4.  **Consider Alternatives (for completeness/robustness):**\n    *   Using `.get()`: While often used for retrieval, you can check if it returns a specific value (e.g., `d.get(key) is not None`), but this is less direct",
+      "has_reasoning": true
+    },
+    {
+      "id": 115,
+      "cat": "coding",
+      "success": true,
+      "latency_ms": 6219.158887863159,
+      "tokens_in": 29,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Goal:** Write a Python list comprehension.\n2.  **Task:** Filter even numbers.\n3.  **Input (Implicit):** A list of numbers (e.g., `numbers_list`).\n4.  **Condition for Evenness:** A number is even if it is divisible by 2, which means `number % 2 == 0`.\n5.  **Structure of List Comprehension:** `[expression for item in iterable if condition]`\n\n*   `iterable`: The input list (`numbers_list`).\n*   `item`: The variable representing each number (`num`).\n*   `condition`: `num % 2 == 0",
+      "has_reasoning": true
+    },
+    {
+      "id": 116,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 4484.079837799072,
+      "tokens_in": 38,
+      "tokens_out": 71,
+      "content": "```json\n{\n  \"status\": \"ok\",\n  \"count\": 42\n}\n```",
+      "has_reasoning": true
+    },
+    {
+      "id": 117,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 3243.123769760132,
+      "tokens_in": 36,
+      "tokens_out": 24,
+      "content": "```json\n{\n  \"verified\": true,\n  \"system\": \"Alpha\"\n}\n```",
+      "has_reasoning": false
+    },
+    {
+      "id": 118,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 4620.651006698608,
+      "tokens_in": 40,
+      "tokens_out": 90,
+      "content": "```json\n{\n  \"priority\": \"HIGH\",\n  \"score\": 0.95\n}\n```",
+      "has_reasoning": true
+    },
+    {
+      "id": 119,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 4025.280237197876,
+      "tokens_in": 38,
+      "tokens_out": 97,
+      "content": "```json\n{\n  \"action\": \"EXECUTE\",\n  \"target\": \"sandbox\"\n}\n```",
+      "has_reasoning": true
+    },
+    {
+      "id": 120,
+      "cat": "structured",
+      "success": true,
+      "latency_ms": 4933.5033893585205,
+      "tokens_in": 39,
+      "tokens_out": 150,
+      "content": "```json\n{\n  \"verdict\": \"APPROVED\",\n  \"risk_",
+      "has_reasoning": true
+    },
+    {
+      "id": 121,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2401.317358016968,
+      "tokens_in": 29,
+      "tokens_out": 3,
+      "content": "No.",
+      "has_reasoning": false
+    },
+    {
+      "id": 122,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2275.1176357269287,
+      "tokens_in": 27,
+      "tokens_out": 5,
+      "content": "1945",
+      "has_reasoning": false
+    },
+    {
+      "id": 123,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2212.1970653533936,
+      "tokens_in": 29,
+      "tokens_out": 2,
+      "content": "Yes",
+      "has_reasoning": false
+    },
+    {
+      "id": 124,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 4527.681589126587,
+      "tokens_in": 31,
+      "tokens_out": 150,
+      "content": "Thinking Process:\n\n1.  **Analyze the Request:** The user is asking if humans can survive without oxygen for 1 hour, and requires a \"Yes\" or \"No\" answer.\n2.  **Determine Biological Facts (Human Survival without Oxygen):**\n    *   Humans require oxygen to sustain cellular respiration.\n    *   The typical time frame for consciousness loss due to hypoxia is usually within minutes (3-5 minutes).\n    *   Survival beyond a few minutes without external oxygen supply is extremely difficult and generally requires specialized conditions or medical intervention (like being submerged in water, which introduces other variables, but the core lack of O2 remains critical).\n    *   For an average human breathing ambient air",
+      "has_reasoning": true
+    },
+    {
+      "id": 125,
+      "cat": "factuality",
+      "success": true,
+      "latency_ms": 2197.9000568389893,
+      "tokens_in": 25,
+      "tokens_out": 3,
+      "content": "William Shakespeare",
+      "has_reasoning": false
+    }
+  ]
+}

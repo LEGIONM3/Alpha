@@ -1,0 +1,49 @@
+{
+  "corpus_size": 10,
+  "dimension": 768,
+  "ingest_time_s": 21.28,
+  "top1_accuracy_percent": 100.0,
+  "top3_accuracy_percent": 100.0,
+  "queries": [
+    {
+      "query": "Where can I persist relational structured data with SQL?",
+      "expected_domain": "database",
+      "top1_match": "doc_db_1",
+      "top1_similarity": 0.6463,
+      "top1_correct": true,
+      "latency_ms": 2233.59
+    },
+    {
+      "query": "How do cells produce metabolic energy?",
+      "expected_domain": "biology",
+      "top1_match": "doc_bio_2",
+      "top1_similarity": 0.8018,
+      "top1_correct": true,
+      "latency_ms": 2088.16
+    },
+    {
+      "query": "What describes curved spacetime and gravity?",
+      "expected_domain": "physics",
+      "top1_match": "doc_phys_1",
+      "top1_similarity": 0.7938,
+      "top1_correct": true,
+      "latency_ms": 2078.56
+    },
+    {
+      "query": "How do cryptographic hashes protect against integrity attacks?",
+      "expected_domain": "security",
+      "top1_match": "doc_sec_1",
+      "top1_similarity": 0.7534,
+      "top1_correct": true,
+      "latency_ms": 2074.17
+    },
+    {
+      "query": "What system models reality and governance?",
+      "expected_domain": "alpha",
+      "top1_match": "doc_alpha_1",
+      "top1_similarity": 0.7539,
+      "top1_correct": true,
+      "latency_ms": 2073.45
+    }
+  ]
+}

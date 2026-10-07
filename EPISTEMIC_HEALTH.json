@@ -1,0 +1,25 @@
+{
+  "timestamp": 1791307454.1209464,
+  "last_updated_iso": "2026-10-06T17:24:14.120946+00:00",
+  "status": "HEALTHY",
+  "total_beliefs": 4,
+  "verified_beliefs": 3,
+  "contradicted_beliefs": 0,
+  "unverified_beliefs": 1,
+  "quarantined_beliefs": 0,
+  "average_confidence": 0.978,
+  "grounding_score": 1.0,
+  "reality_index": 1.0,
+  "reality_distance_score": 0.0,
+  "causal_integrity": 1.0,
+  "drift_risk": "LOW",
+  "drift_score": 0.0,
+  "active_contradictions": 0,
+  "quarantine_count": 0,
+  "immune_system_status": "VIGILANT",
+  "details": {
+    "active_beliefs": 4,
+    "dead_beliefs": 0
+  },
+  "summary": "Epistemic Health [HEALTHY]: 3/4 verified beliefs. Reality Index: 1.0 | Grounding: 1.0 | Causal Integrity: 1.0 | Active Contradictions: 0 | Quarantined: 0."
+}

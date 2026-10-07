@@ -1,0 +1,122 @@
+{
+  "status": "OPERATIONAL",
+  "total_duration_s": 33.65,
+  "stages": [
+    {
+      "stage_number": 1,
+      "stage_name": "Load Identity",
+      "success": true,
+      "latency_ms": 5.51,
+      "details": {
+        "name": "Alpha",
+        "hash": "db83ad6153717e8dbfc15865ac415ab85b7350778068a3973435a7416acbd525"
+      },
+      "error": null
+    },
+    {
+      "stage_number": 2,
+      "stage_name": "Load Governance",
+      "success": true,
+      "latency_ms": 0.0,
+      "details": {
+        "constitution_articles": 5,
+        "governance_ready": true
+      },
+      "error": null
+    },
+    {
+      "stage_number": 3,
+      "stage_name": "Load Truth Layer",
+      "success": true,
+      "latency_ms": 2.34,
+      "details": {
+        "orphan_beliefs_blocked": true,
+        "evidence_registry_active": true
+      },
+      "error": null
+    },
+    {
+      "stage_number": 4,
+      "stage_name": "Load World Model",
+      "success": true,
+      "latency_ms": 0.52,
+      "details": {
+        "total_entities": 2,
+        "dimensions_active": 14
+      },
+      "error": null
+    },
+    {
+      "stage_number": 5,
+      "stage_name": "Load Self Model",
+      "success": true,
+      "latency_ms": 1.06,
+      "details": {
+        "who_am_i": "Project Alpha (Omni-Cognitive World Model v4.0.0)",
+        "capabilities_count": 3
+      },
+      "error": null
+    },
+    {
+      "stage_number": 6,
+      "stage_name": "Load Agents",
+      "success": true,
+      "latency_ms": 4130.78,
+      "details": {
+        "agents_managed": 10,
+        "council_ready": true
+      },
+      "error": null
+    },
+    {
+      "stage_number": 7,
+      "stage_name": "Load Tools",
+      "success": true,
+      "latency_ms": 0.68,
+      "details": {
+        "registered_tools": 30,
+        "sandbox_active": true
+      },
+      "error": null
+    },
+    {
+      "stage_number": 8,
+      "stage_name": "Load Model",
+      "success": true,
+      "latency_ms": 29451.62,
+      "details": {
+        "model_id": "gemma-4-e4b-it-ultra-uncensored-heretic",
+        "probe_latency_ms": 29446.95,
+        "embedding_dimension": 768
+      },
+      "error": null
+    },
+    {
+      "stage_number": 9,
+      "stage_name": "Perform Validation",
+      "success": true,
+      "latency_ms": 53.69,
+      "details": {
+        "tiered_knowledge_active": true,
+        "context_length": 2383
+      },
+      "error": null
+    },
+    {
+      "stage_number": 10,
+      "stage_name": "Enter Operational State",
+      "success": true,
+      "latency_ms": 0.0,
+      "details": {
+        "status": "OPERATIONAL",
+        "boot_timestamp": 1791312720.9777718,
+        "identity_hash": "db83ad6153717e8dbfc15865ac415ab85b7350778068a3973435a7416acbd525",
+        "model_id": "gemma-4-e4b-it-ultra-uncensored-heretic",
+        "embedding_dimension": 768,
+        "world_model_entities": 2
+      },
+      "error": null
+    }
+  ],
+  "timestamp": 1791312720.9777718
+}

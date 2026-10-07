@@ -1,0 +1,40 @@
+{
+  "timestamp": 1791349133.8065407,
+  "audit_latency_ms": 5.3,
+  "system_health": "OPTIMAL",
+  "resources": {
+    "cpu_percent": 70.7,
+    "ram_percent": 63.7,
+    "ram_available_gb": 11.4,
+    "process_ram_mb": 683.8
+  },
+  "concurrency": {
+    "total_threads": 6,
+    "has_cognitive_runtime": true,
+    "has_perception_bus": true,
+    "has_autonomous_thought": true,
+    "thread_list": [
+      "MainThread",
+      "AlphaPerceptionBus-FSWatcher",
+      "AlphaCognitiveRuntime-AutonomousThought",
+      "AlphaMonitorWorker-SelfMonitoringAgent",
+      "AlphaMonitorWorker-GroundingMonitor",
+      "AlphaMissionExecutor-ContinuationThread"
+    ]
+  },
+  "world_model": {
+    "status": "HEALTHY",
+    "entities": 25,
+    "beliefs": 3,
+    "evidence_count": 5
+  },
+  "embeddings": {
+    "status": "ONLINE",
+    "dimension": 768,
+    "cached_vectors": 12
+  },
+  "contradictions_detected": 0,
+  "failures_detected": 0,
+  "recent_error_samples": [],
+  "dead_components": []
+}
