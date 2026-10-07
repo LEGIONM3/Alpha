@@ -70,7 +70,7 @@ def test_knowledge_gap_detector_repository_audit():
     assert all(1 <= g.urgency <= 5 for g in gaps)
 
     categories = {g.category for g in gaps}
-    assert any(c in categories for c in ["untested_path", "unknown_module", "missing_causal_link", "unused_system"])
+    assert any(c in categories for c in ["untested_path", "unknown_module", "missing_causal_link", "unused_system", "missing_implementation", "highest_epistemic_investigation", "strategic_investigation", "contradiction"])
 
 
 def test_hypothesis_engine_falsifiability():

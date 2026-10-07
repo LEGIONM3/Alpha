@@ -78,12 +78,46 @@ class ResearchEngine:
     def __init__(self, workspace_root: Optional[Path] = None):
         self.workspace_root = Path(workspace_root or Path.cwd()).resolve()
 
-    def investigate(self, question: str) -> List[ResearchFinding]:
+    def investigate(self, question: str, target_hint: Optional[str] = None) -> List[ResearchFinding]:
         """Dispatches the research query to code, doc, dependency, and log analyzers.
 
         Returns verified empirical findings with exact citations.
         """
         findings: List[ResearchFinding] = []
+
+        # 0. Direct Path Analysis if query mentions specific files
+        path_matches = re.findall(r"[\w\./\-]+\.(?:py|md|json|toml)", f"{question} {target_hint or ''}")
+        for path_str in path_matches:
+            target_p = (self.workspace_root / path_str).resolve()
+            if target_p.exists():
+                try:
+                    lines = target_p.read_text(encoding="utf-8", errors="replace").splitlines()
+                    rel_p = target_p.relative_to(self.workspace_root).as_posix()
+                    sample_lines = lines[:6]
+                    evidence = [f"{rel_p}:{idx+1}: {l.strip()}" for idx, l in enumerate(sample_lines) if l.strip()]
+                    citations = [f"{rel_p}:1"]
+                    findings.append(
+                        ResearchFinding(
+                            finding_summary=f"Verified file '{rel_p}' exists with {len(lines)} lines.",
+                            evidence=evidence,
+                            citations=citations,
+                            source_paths=[rel_p],
+                            confidence=0.98
+                        )
+                    )
+                except Exception:
+                    pass
+            else:
+                findings.append(
+                    ResearchFinding(
+                        finding_summary=f"Referenced path '{path_str}' does NOT exist in workspace filesystem.",
+                        evidence=[f"Absence check at {target_p.as_posix()}"],
+                        citations=[f"Filesystem:missing:{path_str}"],
+                        source_paths=[path_str],
+                        confidence=0.99
+                    )
+                )
+
         keywords = self._extract_keywords(question)
         if not keywords:
             keywords = ["alpha", "system"]

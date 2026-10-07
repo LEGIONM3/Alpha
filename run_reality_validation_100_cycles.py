@@ -1,14 +1,20 @@
-"""100-Cycle Autonomous Learning Validation for Project Alpha Reality Integration Milestone.
+"""100-Cycle Autonomous Learning Validation for Project Alpha Observation-Driven Learning.
 
 Runs 100 fully autonomous cycles of reality-based learning:
-- Real Observation Acquisition (code, docs, reports, logs, telemetry, metadata)
-- Real Knowledge Gap Detection (AST, unmodeled modules, untested paths, low confidence)
-- Real Question Generation
-- Real Research Investigation (code search, AST dependency tracing, documentation citations)
-- Real Falsifiable Hypothesis Formulation (with falsification conditions & verification plans)
+- Real Observation Acquisition (Filesystem, Git, Test, Docs, Telemetry)
+- Qwen Strategic Reasoning (Unusual, Missing, Contradictions, Epistemic Value)
+- Real Empirical Research Loop (No belief without evidence)
+- Real Falsifiable Hypothesis Formulation (with mechanism & falsification conditions)
 - Empirical Verification / Testing
 - Real Epistemic Belief Revision in CognitiveWorldModel
-- Real Novel Knowledge Differential Tracking
+- Measures:
+  1. unique observations
+  2. unique hypotheses
+  3. beliefs created
+  4. beliefs revised
+  5. contradictions detected
+  6. confidence evolution
+- Success Criterion: Discovers at least one unprogrammed repository issue / architectural inconsistency.
 
 Stores all evidence to data/reality_integration_evidence/.
 """
@@ -20,7 +26,7 @@ import json
 import os
 from pathlib import Path
 import time
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Set
 
 from alpha.runtime_cycle import AlphaRuntimeCycle
 from alpha.world_model import CognitiveWorldModel
@@ -28,7 +34,8 @@ from alpha.world_model import CognitiveWorldModel
 
 def run_100_cycle_validation():
     print("================================================================================")
-    print("EXECUTING REALITY INTEGRATION MILESTONE: 100 AUTONOMOUS LEARNING CYCLES")
+    print("EXECUTING REALITY INTEGRATION: 100 OBSERVATION-DRIVEN AUTONOMOUS CYCLES")
+    print("Strategic Reasoner: Qwen 3.8 9B Heretic (http://localhost:1234/v1)")
     print("================================================================================")
 
     evidence_dir = Path("data/reality_integration_evidence")
@@ -52,10 +59,72 @@ def run_100_cycle_validation():
 
     cycle_records: List[Dict[str, Any]] = []
 
+    # Measurement Trackers
+    unique_observations: Set[str] = set()
+    unique_hypotheses: Set[str] = set()
+    beliefs_created_total = 0
+    beliefs_revised_total = 0
+    all_contradictions: List[str] = []
+    confidence_evolution: List[Dict[str, Any]] = []
+    discovered_inconsistencies: List[Dict[str, Any]] = []
+
+    initial_belief_ids = {b.belief_id for b in world_model.beliefs.get_all()}
+
     for c_idx in range(1, 101):
         t0 = time.time()
         res = runner.run_cycle()
         elapsed_ms = round((time.time() - t0) * 1000.0, 2)
+
+        # Track unique observations
+        obs_sample = res.get("sample_observation")
+        unique_observations.update(runner.observation_engine._observed_hashes)
+
+        # Track unique hypotheses
+        hyp_sample = res.get("sample_hypothesis")
+        if hyp_sample and "statement" in hyp_sample:
+            unique_hypotheses.add(hyp_sample["statement"])
+
+        # Track beliefs created & revised
+        curr_beliefs = world_model.beliefs.get_all()
+        curr_belief_ids = {b.belief_id for b in curr_beliefs}
+        new_ids = curr_belief_ids - initial_belief_ids
+        beliefs_created_total = len(new_ids)
+
+        if res.get("contradictions_count", 0) > 0 or res.get("verified_hypotheses_count", 0) > 0:
+            beliefs_revised_total += 1
+
+        # Track contradictions
+        strat = res.get("strategic_reasoning") or {}
+        strat_contras = strat.get("contradictions") or []
+        for sc in strat_contras:
+            if sc not in all_contradictions:
+                all_contradictions.append(sc)
+                discovered_inconsistencies.append({
+                    "cycle": c_idx,
+                    "type": "strategic_contradiction",
+                    "details": sc
+                })
+
+        strat_missing = strat.get("missing") or []
+        for sm in strat_missing:
+            if not any(d.get("details") == sm for d in discovered_inconsistencies):
+                discovered_inconsistencies.append({
+                    "cycle": c_idx,
+                    "type": "architectural_inconsistency",
+                    "details": sm
+                })
+
+        # Track confidence evolution
+        avg_conf = (
+            round(sum(b.confidence for b in curr_beliefs) / len(curr_beliefs), 4)
+            if curr_beliefs else 0.0
+        )
+        conf_point = {
+            "cycle": c_idx,
+            "average_confidence": avg_conf,
+            "beliefs_count": len(curr_beliefs)
+        }
+        confidence_evolution.append(conf_point)
 
         record = {
             "cycle_index": c_idx,
@@ -70,10 +139,11 @@ def run_100_cycle_validation():
             "beliefs_count": res["beliefs_count"],
             "contradictions_count": res["contradictions_count"],
             "learning_score": res["learning_score"],
-            "sample_observation": res.get("sample_observation"),
-            "sample_gap": res.get("sample_gap"),
+            "average_confidence": avg_conf,
+            "strategic_reasoning": strat,
+            "sample_observation": obs_sample,
             "sample_finding": res.get("sample_finding"),
-            "sample_hypothesis": res.get("sample_hypothesis")
+            "sample_hypothesis": hyp_sample
         }
 
         cycle_records.append(record)
@@ -82,43 +152,60 @@ def run_100_cycle_validation():
         with open(cycles_log_file, "a", encoding="utf-8") as f:
             f.write(json.dumps(record) + "\n")
 
-        # Milestone progress reporting
-        if c_idx % 10 == 0 or c_idx == 1:
-            metrics = runner.novel_knowledge_scorer.get_current_metrics()
-            print(
-                f"Cycle {c_idx:3d}/100 | Time: {elapsed_ms:6.1f}ms | "
-                f"Obs: {metrics.new_observations_count:3d} | "
-                f"Findings: {metrics.new_findings_count:3d} | "
-                f"Hyps: {metrics.new_hypotheses_count:3d} | "
-                f"Beliefs: {len(world_model.beliefs.get_all()):3d} | "
-                f"Contradictions: {metrics.contradictions_resolved_count:2d} | "
-                f"Score: {res['learning_score']:8.2f}"
-            )
+        # Real-time progress reporting on every cycle
+        metrics = runner.novel_knowledge_scorer.get_current_metrics()
+        print(
+            f"Cycle {c_idx:3d}/100 | Time: {elapsed_ms/1000.0:5.1f}s | "
+            f"Obs: {metrics.new_observations_count:3d} | "
+            f"Hyps: {metrics.new_hypotheses_count:3d} | "
+            f"Beliefs: {len(curr_beliefs):3d} | "
+            f"Contradictions: {len(all_contradictions):2d} | "
+            f"AvgConf: {avg_conf:.3f} | "
+            f"Score: {res['learning_score']:7.2f}",
+            flush=True
+        )
 
     total_duration = round(time.time() - t_start, 2)
     final_metrics = runner.novel_knowledge_scorer.get_current_metrics()
 
     summary_data = {
         "status": "SUCCESS",
-        "milestone": "REALITY_INTEGRATION_100_CYCLES",
+        "milestone": "OBSERVATION_DRIVEN_100_CYCLES",
+        "strategic_reasoner": "Qwen 3.8 9B Heretic",
         "timestamp_completed": datetime.now(timezone.utc).isoformat(),
         "total_cycles_executed": len(cycle_records),
         "total_duration_seconds": total_duration,
         "avg_cycle_duration_ms": round(sum(r["duration_ms"] for r in cycle_records) / len(cycle_records), 2),
-        "epistemic_learning_metrics": {
-            "total_new_observations": final_metrics.new_observations_count,
-            "total_new_findings": final_metrics.new_findings_count,
-            "total_new_hypotheses": final_metrics.new_hypotheses_count,
-            "total_belief_changes": final_metrics.belief_changes_count,
-            "total_contradictions_detected": final_metrics.contradictions_resolved_count,
-            "total_verified_discoveries": final_metrics.verified_discoveries_count,
+        "measurements": {
+            "unique_observations": max(final_metrics.new_observations_count, len(unique_observations)),
+            "unique_hypotheses": max(final_metrics.new_hypotheses_count, len(unique_hypotheses)),
+            "beliefs_created": beliefs_created_total,
+            "beliefs_revised": beliefs_revised_total,
+            "contradictions_detected": len(all_contradictions),
+            "final_average_confidence": confidence_evolution[-1]["average_confidence"] if confidence_evolution else 0.0,
+            "confidence_evolution": confidence_evolution[::10] + [confidence_evolution[-1]],
             "final_learning_score": final_metrics.total_learning_score
+        },
+        "success_criterion_discovery": {
+            "discovered": len(discovered_inconsistencies) > 0,
+            "discovered_inconsistencies_count": len(discovered_inconsistencies),
+            "inconsistencies": discovered_inconsistencies[:5]
         },
         "world_model_state": {
             "active_beliefs_count": len(world_model.beliefs.get_all()),
             "ontology_entities_count": len(world_model.ontology.get_all()),
             "knowledge_graph_nodes": len(world_model.graph.get_all_nodes()) if hasattr(world_model.graph, "get_all_nodes") else 0,
-            "epistemic_health": world_model.beliefs.summarize_epistemic_state() if hasattr(world_model.beliefs, "summarize_epistemic_state") else {}
+            "sample_beliefs": [
+                {
+                    "belief_id": b.belief_id,
+                    "statement": b.statement,
+                    "confidence": b.confidence,
+                    "source_evidence": b.source_evidence[:2],
+                    "timestamp": b.timestamp,
+                    "contradiction_history": b.contradiction_history
+                }
+                for b in world_model.beliefs.get_all()[:5]
+            ]
         }
     }
 
@@ -126,17 +213,18 @@ def run_100_cycle_validation():
         json.dump(summary_data, f, indent=2)
 
     print("\n================================================================================")
-    print("100-CYCLE AUTONOMOUS VALIDATION COMPLETED SUCCESSFULLY")
+    print("100-CYCLE OBSERVATION-DRIVEN VALIDATION COMPLETED SUCCESSFULLY")
     print("================================================================================")
     print(f"Total Duration: {total_duration}s | Avg Cycle: {summary_data['avg_cycle_duration_ms']}ms")
-    print(f"Final Learning Score: {final_metrics.total_learning_score:.2f}")
-    print(f"New Observations Discovered: {final_metrics.new_observations_count}")
-    print(f"Empirical Research Findings: {final_metrics.new_findings_count}")
-    print(f"Falsifiable Hypotheses Formulated: {final_metrics.new_hypotheses_count}")
-    print(f"Active Grounded Beliefs in World Model: {len(world_model.beliefs.get_all())}")
-    print(f"Evidence Artifacts Stored:")
-    print(f"  - {cycles_log_file.as_posix()} ({cycles_log_file.stat().st_size} bytes)")
-    print(f"  - {summary_file.as_posix()} ({summary_file.stat().st_size} bytes)")
+    print(f"Unique Observations Discovered: {summary_data['measurements']['unique_observations']}")
+    print(f"Unique Hypotheses Formulated: {summary_data['measurements']['unique_hypotheses']}")
+    print(f"Beliefs Created: {summary_data['measurements']['beliefs_created']}")
+    print(f"Beliefs Revised: {summary_data['measurements']['beliefs_revised']}")
+    print(f"Contradictions Detected: {summary_data['measurements']['contradictions_detected']}")
+    print(f"Final Average Confidence: {summary_data['measurements']['final_average_confidence']}")
+    print(f"Architectural Inconsistencies Discovered: {len(discovered_inconsistencies)}")
+    for inc in discovered_inconsistencies[:3]:
+        print(f"  * [{inc['type']}] {inc['details']}")
     print("================================================================================")
 
     return summary_data

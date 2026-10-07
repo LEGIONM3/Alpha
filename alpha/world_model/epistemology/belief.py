@@ -36,13 +36,17 @@ class Belief(BaseModel):
     confidence_score: float = Field(default=0.5, ge=0.0, le=1.0)
     evidence: List[str] = Field(default_factory=list)          # Evidence IDs
     supporting_evidence: List[str] = Field(default_factory=list) # Phase 8 traceable evidence IDs
+    source_evidence: List[str] = Field(default_factory=list)     # Grounded empirical evidence citations/IDs
     sources: List[str] = Field(default_factory=list)           # Originating agent or sensor IDs
     source_documents: List[str] = Field(default_factory=list)  # Phase 8 source file/doc URIs
     observations: List[Dict[str, Any]] = Field(default_factory=list) # Phase 8 empirical observations
+    supporting_observations: List[Dict[str, Any]] = Field(default_factory=list) # Live observations supporting belief
     contradictions: List[str] = Field(default_factory=list)    # Refuting evidence or belief IDs
     contradicting_evidence: List[str] = Field(default_factory=list) # Phase 8 refuting evidence IDs
+    contradiction_history: List[str] = Field(default_factory=list) # Historical record of empirical contradictions
     verification_status: str = Field(default="UNVERIFIED")     # UNVERIFIED, VERIFIED, CONTRADICTED, QUARANTINED, FALSIFIED
     last_verified_timestamp: float = Field(default_factory=time.time)
+    timestamp: float = Field(default_factory=time.time)        # Observation/revision timestamp
     verification_history: List[VerificationRecord] = Field(default_factory=list)
     decay_rate: float = Field(default=0.005, ge=0.0)           # Per-second or per-tick decay rate
     last_validation: float = Field(default_factory=time.time)
@@ -62,23 +66,28 @@ class Belief(BaseModel):
             elif "confidence" in data and "confidence_score" in data:
                 data["confidence_score"] = data["confidence"]
 
-            # Sync evidence <-> supporting_evidence
-            if "supporting_evidence" in data and "evidence" not in data:
-                data["evidence"] = list(data["supporting_evidence"])
-            elif "evidence" in data and "supporting_evidence" not in data:
-                data["supporting_evidence"] = list(data["evidence"])
+            # Sync evidence <-> supporting_evidence <-> source_evidence
+            ev = data.get("source_evidence") or data.get("supporting_evidence") or data.get("evidence") or []
+            data["evidence"] = list(ev)
+            data["supporting_evidence"] = list(ev)
+            data["source_evidence"] = list(ev)
 
-            # Sync contradictions <-> contradicting_evidence
-            if "contradicting_evidence" in data and "contradictions" not in data:
-                data["contradictions"] = list(data["contradicting_evidence"])
-            elif "contradictions" in data and "contradicting_evidence" not in data:
-                data["contradicting_evidence"] = list(data["contradictions"])
+            # Sync observations <-> supporting_observations
+            obs = data.get("supporting_observations") or data.get("observations") or []
+            data["observations"] = list(obs)
+            data["supporting_observations"] = list(obs)
 
-            # Sync last_validation <-> last_verified_timestamp
-            if "last_verified_timestamp" in data and "last_validation" not in data:
-                data["last_validation"] = data["last_verified_timestamp"]
-            elif "last_validation" in data and "last_verified_timestamp" not in data:
-                data["last_verified_timestamp"] = data["last_validation"]
+            # Sync contradictions <-> contradicting_evidence <-> contradiction_history
+            contra = data.get("contradiction_history") or data.get("contradicting_evidence") or data.get("contradictions") or []
+            data["contradictions"] = list(contra)
+            data["contradicting_evidence"] = list(contra)
+            data["contradiction_history"] = list(contra)
+
+            # Sync timestamps
+            ts = data.get("timestamp") or data.get("last_verified_timestamp") or data.get("last_validation") or time.time()
+            data["timestamp"] = ts
+            data["last_verified_timestamp"] = ts
+            data["last_validation"] = ts
         return data
 
     def __setattr__(self, name: str, value: Any) -> None:
@@ -87,18 +96,21 @@ class Belief(BaseModel):
             super().__setattr__("confidence_score", value)
         elif name == "confidence_score":
             super().__setattr__("confidence", value)
-        elif name == "evidence":
-            super().__setattr__("supporting_evidence", value)
-        elif name == "supporting_evidence":
+        elif name in ("evidence", "supporting_evidence", "source_evidence"):
             super().__setattr__("evidence", value)
-        elif name == "contradictions":
-            super().__setattr__("contradicting_evidence", value)
-        elif name == "contradicting_evidence":
+            super().__setattr__("supporting_evidence", value)
+            super().__setattr__("source_evidence", value)
+        elif name in ("observations", "supporting_observations"):
+            super().__setattr__("observations", value)
+            super().__setattr__("supporting_observations", value)
+        elif name in ("contradictions", "contradicting_evidence", "contradiction_history"):
             super().__setattr__("contradictions", value)
-        elif name == "last_validation":
-            super().__setattr__("last_verified_timestamp", value)
-        elif name == "last_verified_timestamp":
+            super().__setattr__("contradicting_evidence", value)
+            super().__setattr__("contradiction_history", value)
+        elif name in ("last_validation", "last_verified_timestamp", "timestamp"):
             super().__setattr__("last_validation", value)
+            super().__setattr__("last_verified_timestamp", value)
+            super().__setattr__("timestamp", value)
 
     def is_alive(self) -> bool:
         return self.lifecycle_state == LifecycleState.ACTIVE and self.confidence > 0.05 and self.verification_status != "QUARANTINED"
