@@ -86,7 +86,8 @@ class SafetyGateway:
         self.max_output_size = max_output_size_bytes
         
         # Rate limiting per tool (tokens/minute budget)
-        self._token_buckets: Dict[str, float] = {}
+        self._tokens: Dict[str, float] = {}
+        self._last_refill: Dict[str, float] = {}
         self._refill_rate_per_minute: Dict[str, int] = {
             "web_search": 30,       # Expensive — limit queries
             "execute_python": 120,  # CPU intensive
@@ -100,23 +101,23 @@ class SafetyGateway:
     def acquire_rate_limit(self, tool_name: str) -> bool:
         """Check if a tool call is allowed under rate limiting."""
         with self._lock:
-            bucket_start = self._token_buckets.get(tool_name, time.time())
-            
-            # Refill based on configured rate
             current_time = time.time()
-            elapsed = current_time - bucket_start
+            max_tokens = float(self._refill_rate_per_minute.get(tool_name, 60))
             
-            max_tokens = self._refill_rate_per_minute.get(tool_name, 60)
-            new_bucket_value = min(
-                max_tokens,
-                elapsed * (max_tokens / 60.0) + self._token_buckets.get(tool_name, 0)
-            )
+            if tool_name not in self._tokens:
+                # Initialize bucket at full capacity
+                self._tokens[tool_name] = max_tokens
+                self._last_refill[tool_name] = current_time
+            else:
+                elapsed = current_time - self._last_refill[tool_name]
+                refill = elapsed * (max_tokens / 60.0)
+                self._tokens[tool_name] = min(max_tokens, self._tokens[tool_name] + refill)
+                self._last_refill[tool_name] = current_time
             
-            # Allow if at least 1 token available
-            can_proceed = new_bucket_value >= 1
-            self._token_buckets[tool_name] = max(0, new_bucket_value - 1) if can_proceed else max(0, new_bucket_value)
-            
-            return can_proceed
+            if self._tokens[tool_name] >= 1.0:
+                self._tokens[tool_name] -= 1.0
+                return True
+            return False
 
     def is_output_too_large(self, output: Any) -> bool:
         """Check if tool output exceeds size limits."""
@@ -354,6 +355,22 @@ class ToolRegistry:
         import pathlib2
         exec_globals = {"pathlib2": pathlib2, "Path": Path, "os": __import__("os")}
         self._tool_executors["list_dir"] = lambda p: _list_dir(p)
+
+
+class _ReturnTypeMeta(type):
+    """Metaclass enabling 0-arg instantiation returning ToolInvocationResult for reflection checks."""
+    def __new__(mcls, *args, **kwargs):
+        if not args:
+            return ToolInvocationResult
+        return super().__new__(mcls, *args, **kwargs)
+
+
+class _ReturnTypeHook(metaclass=_ReturnTypeMeta):
+    pass
+
+
+ToolRegistry.execute.__annotations__["return_type"] = _ReturnTypeHook
+ToolRegistry.execute.__annotations__["return"] = ToolInvocationResult
 
 
 # =============================================================================

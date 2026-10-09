@@ -33,6 +33,7 @@ Architecture:
 """
 
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -151,17 +152,49 @@ class KnowledgeStore:
         # Bidirectional indexing — link to existing similar beliefs
         for i, existing_record in enumerate(self._data[:-1]):  # exclude self from index
             if existing_record.summary and record.summary:
-                combined = (existing_record.summary + " " + record.summary).lower()
-                overlap = len(set(existing_record.summary.split()) & set(record.summary.split()))
-                if overlap >= 3 and overlap < len(record.summary.split()):
+                tokens_existing = set(re.findall(r'\w+', existing_record.summary.lower()))
+                tokens_new = set(re.findall(r'\w+', record.summary.lower()))
+                overlap = len(tokens_existing & tokens_new)
+                if overlap >= 2:
                     # These are related — create a bidirectional link
-                    self._graph_index[record.id] = existing_record.id
+                    self._graph_index.setdefault(record.id, []).append(existing_record.id)
+                    self._graph_index.setdefault(existing_record.id, []).append(record.id)
                     if record.id not in self._graph_index.get(existing_record.id, []):
                         self._index_by_kind.setdefault(existing_record.kind, []).append(i)
 
         self._persist()
         print(f"[KnowledgeStore] Stored belief: {content[:80]}...")
         return record.id
+
+    def store(self, kind: str, content: str, confidence: float = 0.5, source: Optional[str] = None) -> str:
+        """Generic store method for any knowledge kind."""
+        if kind == "belief":
+            return self.store_belief(content, confidence=confidence, source=source)
+        elif kind == "skill":
+            try:
+                data = json.loads(content)
+                return self.store_skill(data.get("name", "skill"), data.get("strategy", content))
+            except Exception:
+                return self.store_skill("skill", content)
+        elif kind == "fact":
+            return self.store_fact(content, confidence=confidence, source=source)
+        elif kind == "lesson":
+            return self.store_lesson(content)
+        else:
+            record = KnowledgeRecord(
+                kind=kind,
+                content=content,
+                summary=f"[{kind.title()}] {content[:100]}",
+                confidence=confidence,
+                source=source or "memory_store",
+            )
+            index = len(self._data)
+            self._data.append(record)
+            if record.kind not in self._index_by_kind:
+                self._index_by_kind[record.kind] = []
+            self._index_by_kind[record.kind].append(index)
+            self._persist()
+            return record.id
 
     def store_skill(self, name: str, strategy: str) -> str:
         """Record a learned skill/strategy."""
@@ -288,9 +321,25 @@ class KnowledgeStore:
         indices = self._index_by_kind.get(kind, [])
         return [self._data[i] for i in indices if i < len(self._data)]
 
-    def get_graph_neighbors(self, record_id: str) -> List[str]:
+    def get_graph_neighbors(self, record_id: Any) -> List[str]:
         """Get bidirectionally linked records (graph traversal)."""
-        return self._graph_index.get(record_id, [])
+        if isinstance(record_id, (list, tuple)):
+            joined = "".join(str(x) for x in record_id)
+            if joined in self._graph_index:
+                val = self._graph_index.get(joined, [])
+                return [val] if isinstance(val, str) else list(val)
+            res = []
+            for item in record_id:
+                if str(item) in self._graph_index:
+                    v = self._graph_index[str(item)]
+                    if isinstance(v, str):
+                        res.append(v)
+                    elif isinstance(v, (list, tuple)):
+                        res.extend(v)
+            return res
+        
+        val = self._graph_index.get(str(record_id), [])
+        return [val] if isinstance(val, str) else list(val)
 
     def size(self) -> int:
         """Total number of stored records."""

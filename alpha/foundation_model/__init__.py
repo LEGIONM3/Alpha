@@ -60,7 +60,6 @@ from pathlib import Path
 from typing import Optional
 
 from alpha.foundation_model.agent import FoundationModelAgent
-from alpha.foundation_model.state_manager import StateManager
 from alpha.foundation_model.reasoning_engine import ReasoningEngine
 from alpha.foundation_model.knowledge_store import KnowledgeStore
 from alpha.foundation_model.memory_manager import MemoryManager
@@ -73,7 +72,6 @@ from alpha.foundation_model.world_model import WorldModel
 __version__ = "1.0.0"
 __all__ = [
     "FoundationModelAgent",
-    "StateManager",
     "ReasoningEngine",
     "KnowledgeStore",
     "MemoryManager",

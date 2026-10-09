@@ -60,7 +60,10 @@ class OpenAICompatibleClient:
         timeout_seconds: float = 30.0,
         enable_mock_fallback: bool = True
     ):
-        self.base_url = base_url.rstrip("/")
+        normalized_url = base_url.rstrip("/")
+        if "://localhost" in normalized_url:
+            normalized_url = normalized_url.replace("://localhost", "://127.0.0.1")
+        self.base_url = normalized_url
         self.api_key = api_key
         self.default_model = default_model
         self.timeout_seconds = timeout_seconds

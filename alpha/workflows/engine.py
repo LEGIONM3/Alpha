@@ -37,6 +37,7 @@ class WorkflowEngine:
 
         reflections: List[ToolReflectionReport] = []
         lessons: List[str] = []
+        transient_commentary: List[str] = []
 
         if self.reflection_engine:
             for nid, node in graph.nodes.items():

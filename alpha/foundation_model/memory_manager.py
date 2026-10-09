@@ -30,6 +30,7 @@ a different cognitive function:
 Author: Gemini (Alpha Principal Systems Engineer)
 """
 
+import json
 import time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path

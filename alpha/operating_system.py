@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field
 from alpha.config import AlphaConfig, default_config
 from alpha.core.engine import AlphaEngine
 from alpha.core.model_adapter import BaseLanguageModel, MockWeakModel
+from alpha.cognitive_kernel import CognitiveKernel
 
 # Multi-Agent Cognitive Operating System (Phase 3)
 from alpha.agents import (
@@ -155,11 +156,13 @@ class AlphaOperatingSystem:
         workspace_root: Optional[str] = None,
         db_path: str = ":memory:",
         model: Optional[BaseLanguageModel] = None,
-        config: Optional[AlphaConfig] = None
+        config: Optional[AlphaConfig] = None,
+        enable_mock_fallback: bool = True
     ):
         self.workspace_root = Path(workspace_root).resolve() if workspace_root else Path.cwd()
         self.db_path = db_path
         self.config = config or default_config
+        self.enable_mock_fallback = enable_mock_fallback
 
         # 1. Cognitive Scaffolding Core (Phase 1)
         self.cognitive_engine = AlphaEngine(
@@ -230,7 +233,7 @@ class AlphaOperatingSystem:
         self.model_intelligence = ModelIntelligenceSystem(
             endpoint_url="http://localhost:1234/v1",
             world_model=self.world_model,
-            enable_mock_fallback=True
+            enable_mock_fallback=self.enable_mock_fallback
         )
 
         # 12. Research Civilization (Phase 5: Autonomous Discovery & Frontier Expansion)
@@ -238,6 +241,13 @@ class AlphaOperatingSystem:
             world_model=self.world_model,
             change_governance=self.governance
         )
+
+        # 13. Reality-Grounded Cognitive Kernel
+        self.cognitive_kernel = CognitiveKernel(workspace_root=self.workspace_root)
+
+    def execute_cognitive_cycle(self) -> Any:
+        """Executes a reality-grounded closed-loop cycle through Cognitive Kernel."""
+        return self.cognitive_kernel.execute_cognitive_cycle()
 
     def _register_default_tools(self) -> None:
         """Register all production tools across Filesystem, Sandbox, Verification, Browser, Git, and API."""
@@ -591,6 +601,10 @@ class AlphaOperatingSystem:
     def get_research_telemetry(self) -> ResearchCivilizationTelemetry:
         """Capture comprehensive telemetry across all research graph entities and frontier metrics."""
         return self.research_civilization.get_civilization_telemetry()
+
+
+# Aliases
+CognitiveOperatingSystem = AlphaOperatingSystem
 
 
 

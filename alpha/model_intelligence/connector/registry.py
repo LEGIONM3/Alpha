@@ -68,7 +68,10 @@ class ModelRegistry:
     """Manages available foundation models and their operational boundaries."""
 
     def __init__(self, endpoint_url: str = "http://localhost:1234/v1"):
-        self.endpoint_url = endpoint_url.rstrip("/")
+        normalized_url = endpoint_url.rstrip("/")
+        if "://localhost" in normalized_url:
+            normalized_url = normalized_url.replace("://localhost", "://127.0.0.1")
+        self.endpoint_url = normalized_url
         self._models: Dict[str, ModelMetadata] = {}
         self._default_configs: Dict[str, ModelConfiguration] = {}
         self._register_known_defaults()

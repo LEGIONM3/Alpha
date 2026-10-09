@@ -47,7 +47,6 @@ def utc_now() -> datetime:
     return datetime.now(timezone.utc)
 
 
-@dataclass
 class ReflectionOutput(BaseModel):
     """Structured output of a reflection process.
 
@@ -57,10 +56,10 @@ class ReflectionOutput(BaseModel):
     success: bool  # Did this action achieve its stated goal?
     
     # What worked well (to reinforce)
-    strengths: List[str] = field(default_factory=list)
+    strengths: List[str] = Field(default_factory=list)
     
     # What failed or could be improved (to learn from)
-    weaknesses: List[str] = field(default_factory=list)
+    weaknesses: List[str] = Field(default_factory=list)
     
     # The distilled lesson — an actionable principle for the future
     distilled_lesson: str = ""
@@ -69,7 +68,7 @@ class ReflectionOutput(BaseModel):
     confidence_in_lesson: float = 0.7
     
     # Which thought(s) led directly to a successful/unsuccessful outcome
-    attribution_thought_ids: List[str] = field(default_factory=list)
+    attribution_thought_ids: List[str] = Field(default_factory=list)
 
 
 class SelfImprovementLoop:
@@ -145,7 +144,8 @@ class SelfImprovementLoop:
             confidence_in_lesson=self._compute_confidence(
                 thoughts, 
                 len(strengths), 
-                len(weaknesses)
+                len(weaknesses),
+                success=outcome_success
             ),
             attribution_thought_ids=[t.id for t in attribution_thought_ids],
         )
@@ -176,6 +176,14 @@ class SelfImprovementLoop:
         
         # If failed, analyze what went wrong
         if not success and tool_results:
+            for tr in tool_results:
+                if isinstance(tr, dict) and not tr.get("success", True):
+                    err = tr.get("error_message") or tr.get("error") or "execution error"
+                    weaknesses.append(f"Tool execution error: {err}")
+                elif hasattr(tr, "success") and not tr.success:
+                    err = getattr(tr, "error_message", None) or getattr(tr, "error", None) or "execution error"
+                    weaknesses.append(f"Tool execution error: {err}")
+
             error_thoughts = [t for t in thoughts 
                             if hasattr(t, 'kind') and t.kind.value == "execution"
                             and getattr(t, 'error_message', None)]
@@ -213,9 +221,23 @@ class SelfImprovementLoop:
         return (f"Goal achieved but with imperfections. "
                 f"Impact of weaknesses: {'; '.join(weaknesses[:2])}. ")
 
+    def _generate_fix_suggestion(self, weakness: str) -> str:
+        """Heuristically generate an actionable suggestion from a weakness description."""
+        w_lower = weakness.lower()
+        if "not found" in w_lower or "file" in w_lower:
+            return "Verify target path exists and create parent directories before execution"
+        elif "timeout" in w_lower:
+            return "Increase timeout limit or break operation into smaller chunks"
+        elif "syntax" in w_lower or "parse" in w_lower:
+            return "Validate code syntax with AST parser before dispatching"
+        elif "permission" in w_lower:
+            return "Check file access permissions and authorization tokens"
+        return "Review prerequisite conditions and validate inputs prior to execution"
+
     def _compute_confidence(self, thoughts: List[Thought], 
                            num_strengths: int, 
-                           num_weaknesses: int) -> float:
+                           num_weaknesses: int,
+                           success: bool = True) -> float:
         """How confident should we be in this lesson?"""
         
         # More evidence → higher confidence
@@ -337,7 +359,7 @@ Total tools mastered: {self.self_model['tools_mastered']}
 Limitations acknowledged: {len(self.self_model['known_limitations'])}
   
 Recent lessons stored: {(Path(self._lessons_path).read_text().count('\n') if 
-                         (self._lessons_path.exists()) else 0)}```)
+                         (self._lessons_path.exists()) else 0)}""")
 
 # =============================================================================
 # Main Demo

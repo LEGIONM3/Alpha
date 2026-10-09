@@ -50,7 +50,6 @@ def utc_now() -> datetime:
     return datetime.now(timezone.utc)
 
 
-@dataclass
 class Entity(BaseModel):
     """A concrete entity in the world model.
 
@@ -70,7 +69,7 @@ class Entity(BaseModel):
     attributes: Dict[str, Any] = Field(default_factory=dict)
     
     # Relationships to other entities
-    related_to: List[Tuple[str, str]] = field(default_factory=list)  # (other_id, relationship_type)
+    related_to: List[Tuple[str, str]] = Field(default_factory=list)  # (other_id, relationship_type)
     
     # Epistemic metadata — how confident are we about this entity?
     confidence: float = Field(default=0.5, ge=0.0, le=1.0)
@@ -185,10 +184,12 @@ class WorldModel:
                 description=self._summarize_observation(observation),
             )
             self.entities[entity_id] = entity
+            self.entity_index[entity_name.lower()] = entity_id
             
         else:
             # Update existing entity with new observation
             entity.last_observed_at = utc_now()
+            self.entity_index[entity_name.lower()] = entity_id
             if "not found" in observation.lower():
                 return None  # Observation refutes existence
 
@@ -201,18 +202,34 @@ class WorldModel:
 
     def _extract_entity_from_observation(self, observation: str) -> Optional[str]:
         """Extract an entity name from a natural language observation."""
-        
-        # Simple heuristic extraction
-        keywords = ["file", "directory", "tool", "capability"]
-        
-        for kw in keywords:
-            if f"{kw} '{observation[:50]}'" in observation.lower() or \
-               f"{kw} \"{observation[:50]}\"".lower() in observation.lower():
-                # Try to extract the entity name from context
-                return observation.split("'")[1].strip().replace('"', '') if "'" in observation else observation.split('"')[1].strip()
+        if not observation:
+            return None
 
-        # Fallback: use the entire observation as the entity description
-        # and rely on relationships for disambiguation
+        # 1. Quoted entity names: "name" or 'name'
+        if "'" in observation:
+            parts = observation.split("'")
+            if len(parts) >= 3 and parts[1].strip():
+                return parts[1].strip()
+        if '"' in observation:
+            parts = observation.split('"')
+            if len(parts) >= 3 and parts[1].strip():
+                return parts[1].strip()
+
+        # 2. Pattern: "The X (tool|file|directory|capability|process)..." or "X tool exists"
+        import re
+        m = re.search(r'\b(?:the\s+)?([a-zA-Z0-9_\-\.]+)\s+(?:tool|file|directory|capability|process)\b', observation, re.IGNORECASE)
+        if m:
+            candidate = m.group(1).strip()
+            if candidate.lower() not in {"the", "a", "an", "this", "that"}:
+                return candidate
+
+        # 3. Pattern: "(?:tool|file|directory|capability|process)\s+([a-zA-Z0-9_\-\.]+)"
+        m2 = re.search(r'\b(?:tool|file|directory|capability|process)\s+([a-zA-Z0-9_\-\.]+)\b', observation, re.IGNORECASE)
+        if m2:
+            candidate = m2.group(1).strip()
+            if candidate.lower() not in {"the", "a", "an", "this", "that", "exists", "is"}:
+                return candidate
+
         return None
 
     def _infer_entity_type_from_observation(self, observation: str) -> str:
