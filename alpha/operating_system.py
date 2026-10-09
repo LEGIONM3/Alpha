@@ -1,6 +1,7 @@
 """Alpha Tool-Augmented Cognitive Operating System: Master orchestration for Phase 2."""
 
 import logging
+import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field
@@ -157,12 +158,12 @@ class AlphaOperatingSystem:
         db_path: str = ":memory:",
         model: Optional[BaseLanguageModel] = None,
         config: Optional[AlphaConfig] = None,
-        enable_mock_fallback: bool = True
+        enable_mock_fallback: bool = False
     ):
         self.workspace_root = Path(workspace_root).resolve() if workspace_root else Path.cwd()
         self.db_path = db_path
         self.config = config or default_config
-        self.enable_mock_fallback = enable_mock_fallback
+        self.enable_mock_fallback = enable_mock_fallback or (os.environ.get("ALPHA_ENABLE_MOCK_FALLBACK", "0") == "1")
 
         # 1. Cognitive Scaffolding Core (Phase 1)
         self.cognitive_engine = AlphaEngine(

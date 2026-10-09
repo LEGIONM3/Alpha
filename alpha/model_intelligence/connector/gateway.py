@@ -23,6 +23,7 @@ class GatewayTelemetry(BaseModel):
     total_calls: int = 0
     successful_calls: int = 0
     failed_calls: int = 0
+    mock_calls: int = 0
     total_prompt_tokens: int = 0
     total_completion_tokens: int = 0
     total_latency_ms: float = 0.0
@@ -94,6 +95,8 @@ class ModelGateway:
                 response_format=response_format
             )
             self.telemetry.successful_calls += 1
+            if getattr(resp, "is_mock", False):
+                self.telemetry.mock_calls += 1
             self.telemetry.total_prompt_tokens += resp.tokens_prompt
             self.telemetry.total_completion_tokens += resp.tokens_completion
             self.telemetry.total_latency_ms += resp.latency_ms
@@ -123,7 +126,9 @@ class ModelGateway:
         return {
             "choices": [{"message": {"content": resp.content, "tool_calls": resp.tool_calls}, "finish_reason": resp.finish_reason}],
             "model": resp.model,
-            "latency_ms": resp.latency_ms
+            "latency_ms": resp.latency_ms,
+            "is_mock": getattr(resp, "is_mock", False),
+            "id": getattr(resp, "id", "")
         }
 
     def execute_embeddings(self, texts: List[str], model: Optional[str] = None) -> EmbeddingResponse:

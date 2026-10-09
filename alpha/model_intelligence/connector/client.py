@@ -39,6 +39,7 @@ class ChatCompletionResponse(BaseModel):
     latency_ms: float = 0.0
     tokens_prompt: int = 0
     tokens_completion: int = 0
+    is_mock: bool = False
     raw_response: Dict[str, Any] = Field(default_factory=dict)
 
 
@@ -47,6 +48,7 @@ class EmbeddingResponse(BaseModel):
     embeddings: List[List[float]]
     tokens_used: int = 0
     latency_ms: float = 0.0
+    is_mock: bool = False
 
 
 class OpenAICompatibleClient:
@@ -57,8 +59,8 @@ class OpenAICompatibleClient:
         base_url: str = "http://localhost:1234/v1",
         api_key: str = "not-needed",
         default_model: str = "gemma-4-e4b-it-ultra-uncensored-heretic",
-        timeout_seconds: float = 30.0,
-        enable_mock_fallback: bool = True
+        timeout_seconds: float = 90.0,
+        enable_mock_fallback: bool = False
     ):
         normalized_url = base_url.rstrip("/")
         if "://localhost" in normalized_url:
@@ -147,6 +149,7 @@ class OpenAICompatibleClient:
                     latency_ms=round(latency, 2),
                     tokens_prompt=usage.get("prompt_tokens", len(str(messages)) // 4),
                     tokens_completion=usage.get("completion_tokens", len(content) // 4),
+                    is_mock=False,
                     raw_response=data
                 )
         except Exception as exc:
@@ -196,7 +199,8 @@ class OpenAICompatibleClient:
                     model=selected_model,
                     embeddings=embeds,
                     tokens_used=usage.get("total_tokens", sum(len(t) // 4 for t in texts)),
-                    latency_ms=round(latency, 2)
+                    latency_ms=round(latency, 2),
+                    is_mock=False
                 )
         except Exception:
             if self.enable_mock_fallback:
@@ -210,7 +214,8 @@ class OpenAICompatibleClient:
                     model=selected_model,
                     embeddings=synthetic,
                     tokens_used=sum(len(t) // 4 for t in texts),
-                    latency_ms=round(latency, 2)
+                    latency_ms=round(latency, 2),
+                    is_mock=True
                 )
             raise
 
@@ -239,7 +244,8 @@ class OpenAICompatibleClient:
                     "type": "function",
                     "function": {"name": tool_name, "arguments": json.dumps({"query": "alpha_test"})}
                 }],
-                latency_ms=latency_ms
+                latency_ms=latency_ms,
+                is_mock=True
             )
 
         # Handle structured output
@@ -261,5 +267,6 @@ class OpenAICompatibleClient:
             finish_reason="stop",
             latency_ms=round(latency_ms, 2),
             tokens_prompt=len(last_msg) // 4,
-            tokens_completion=len(content) // 4
+            tokens_completion=len(content) // 4,
+            is_mock=True
         )

@@ -91,6 +91,20 @@ class TestPhaseMDefectRemediation:
         assert len(wm.entities) >= 1
         assert wm.get_entity_by_name("filesystem_scan") is not None
 
+    def test_defect_007_foundation_model_clean_import(self):
+        """DEFECT-007: alpha.foundation_model must import cleanly without non-existent StateManager."""
+        import alpha.foundation_model as fm
+        assert hasattr(fm, "FoundationModelAgent")
+        assert not hasattr(fm, "StateManager")
+
+    def test_defect_008_memory_manager_json_serialization(self, tmp_path):
+        """DEFECT-008: MemoryManager must not fail with NameError: name 'json' is not defined during persistence."""
+        from alpha.foundation_model.memory_manager import MemoryManager
+        mm = MemoryManager(workspace_root=tmp_path)
+        rec = mm.store("Core architecture invariant verified", layer="long_term")
+        assert rec is not None
+        assert rec.content == "Core architecture invariant verified"
+
     def test_defect_009_operating_system_model_fallback(self):
         """DEFECT-009: AlphaOperatingSystem must support enable_mock_fallback and normalize localhost to 127.0.0.1."""
         from alpha.operating_system import AlphaOperatingSystem
