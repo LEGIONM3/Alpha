@@ -1,0 +1,10 @@
+# Project Alpha — Apple Silicon macOS Computer-Use Agent Dependencies
+# Minimum supported Python: >= 3.11 (arm64 native build on Apple Silicon)
+# Verified on Python 3.12.10 (pytest 9.1.1)
+
+pydantic>=2.7.0,<3.0.0
+requests>=2.31.0,<3.0.0
+psutil>=5.9.8,<8.0.0
+playwright>=1.44.0,<2.0.0
+networkx>=3.2.0,<4.0.0
+pytest>=8.0.0,<10.0.0

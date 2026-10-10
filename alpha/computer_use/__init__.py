@@ -36,6 +36,12 @@ from alpha.computer_use.closed_loop import (
     PostActionVerification,
     TrajectoryStepRecord,
 )
+from alpha.computer_use.mac_agent import (
+    MacComputerUseClient,
+    MacAgentHTTPServer,
+    MacAgentServiceCore,
+    MacAgentPolicy,
+)
 
 __all__ = [
     "ComputerActionType",
@@ -61,4 +67,8 @@ __all__ = [
     "ModelActionProposal",
     "PostActionVerification",
     "TrajectoryStepRecord",
+    "MacComputerUseClient",
+    "MacAgentHTTPServer",
+    "MacAgentServiceCore",
+    "MacAgentPolicy",
 ]

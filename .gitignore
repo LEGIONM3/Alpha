@@ -4,3 +4,23 @@ __pycache__/
 .pytest_cache/
 .coverage
 htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variables and secrets (never commit real secrets)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# macOS & IDE artifacts
+.DS_Store
+
+# Isolated browser profiles & runtime audit/trajectory artifacts
+alpha_mac_browser_profile_*/
+data/mac_agent_audit.jsonl
+data/trajectories/

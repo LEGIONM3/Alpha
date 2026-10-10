@@ -131,6 +131,7 @@ class LayaClosedLoopRuntime:
         permission_gate: Optional[PermissionGate] = None,
         evidence_graph: Optional[EvidenceGraph] = None,
         trajectory_dir: Optional[Path] = None,
+        mac_client: Optional[Any] = None,
     ):
         self.workspace_root = Path(workspace_root or Path.cwd()).resolve()
         self.reasoner = reasoner or default_qwen_reasoner
@@ -139,6 +140,7 @@ class LayaClosedLoopRuntime:
         self.trajectory_dir = trajectory_dir or (self.workspace_root / "data" / "trajectories")
         self.trajectory_dir.mkdir(parents=True, exist_ok=True)
         self.laya = LayaComputerInterface(workspace_root=self.workspace_root)
+        self.mac_client = mac_client
 
     def execute_task(self, task: ComputerUseTask) -> ComputerUseTrajectory:
         """Executes a bounded, closed-loop task with full Qwen deliberation and independent verification."""
@@ -151,10 +153,13 @@ class LayaClosedLoopRuntime:
         logger.info(f"Starting Closed-Loop Task '{task.task_id}': Goal='{task.goal}' ({task.modality})")
 
         # Select actuator backend
-        if task.modality.upper() == "BROWSER":
+        mod_upper = task.modality.upper()
+        if mod_upper == "BROWSER":
             return self._execute_browser_loop(task, trajectory, t_start)
-        elif task.modality.upper() == "DESKTOP":
+        elif mod_upper == "DESKTOP":
             return self._execute_desktop_loop(task, trajectory, t_start)
+        elif mod_upper in ("MAC_BROWSER", "MAC_NATIVE"):
+            return self._execute_mac_loop(task, trajectory, t_start)
         else:
             trajectory.status = "VERIFIED_FAILURE"
             trajectory.error = f"Unsupported modality: {task.modality}"
@@ -162,6 +167,304 @@ class LayaClosedLoopRuntime:
             trajectory.duration_ms = round((time.perf_counter() - t_start) * 1000.0, 2)
             self._persist_trajectory(trajectory)
             return trajectory
+
+    # =========================================================================
+    # APPLE SILICON MAC AGENT CLOSED-LOOP WORKFLOW
+    # =========================================================================
+
+    def _execute_mac_loop(
+        self,
+        task: ComputerUseTask,
+        trajectory: ComputerUseTrajectory,
+        t_start: float,
+    ) -> ComputerUseTrajectory:
+        """Executes closed-loop task on remote Apple Silicon Mac Agent via MacComputerUseClient."""
+        from alpha.computer_use.mac_agent.client import MacComputerUseClient
+        from alpha.computer_use.mac_agent.schemas import (
+            ExecuteActionRequest,
+            LocatorStrategy,
+            MacActionType,
+            MacModality,
+            ObserveRequest,
+            SemanticLocator,
+            VerifyOutcomeRequest,
+        )
+
+        client: MacComputerUseClient = self.mac_client or MacComputerUseClient(
+            permission_gate=self.permission_gate
+        )
+        mac_mod = (
+            MacModality.BROWSER
+            if task.modality.upper() == "MAC_BROWSER"
+            else MacModality.NATIVE_GUI
+        )
+        recovery_attempts = 0
+
+        try:
+            # Initial browser navigation on Mac if target_url provided
+            if mac_mod == MacModality.BROWSER and task.target_url:
+                nav_req = ExecuteActionRequest(
+                    task_id=task.task_id,
+                    modality=MacModality.BROWSER,
+                    action_type=MacActionType.BROWSER_NAVIGATE,
+                    url=task.target_url,
+                    rationale=f"Initial navigation for goal: {task.goal}",
+                    intended_effect=f"Open {task.target_url}",
+                    timeout_seconds=task.action_timeout_seconds,
+                )
+                nav_resp = client.execute_action(nav_req)
+                if not nav_resp.ok:
+                    trajectory.status = (
+                        "PERMISSION_DENIED"
+                        if nav_resp.error_code == "URL_NOT_ALLOWED"
+                        else "VERIFIED_FAILURE"
+                    )
+                    trajectory.error = f"Mac initial navigation failed: {nav_resp.error}"
+                    trajectory.ended_at = datetime.now(timezone.utc).isoformat()
+                    trajectory.duration_ms = round((time.perf_counter() - t_start) * 1000.0, 2)
+                    self._persist_trajectory(trajectory)
+                    return trajectory
+
+            step_idx = 0
+            while step_idx < task.max_steps:
+                step_idx += 1
+                trajectory.total_steps = step_idx
+
+                elapsed_s = time.perf_counter() - t_start
+                if elapsed_s > task.max_duration_seconds:
+                    trajectory.status = "TIMEOUT"
+                    trajectory.error = f"Task exceeded duration limit of {task.max_duration_seconds}s"
+                    break
+
+                # 1. OBSERVE
+                obs_resp = client.observe(
+                    ObserveRequest(
+                        task_id=task.task_id,
+                        modality=mac_mod,
+                        app_name=task.window_title or None,
+                    )
+                )
+                if not obs_resp.ok or obs_resp.observation is None:
+                    trajectory.status = "VERIFIED_FAILURE"
+                    trajectory.error = f"Mac observation failed ({obs_resp.error_code}): {obs_resp.error}"
+                    break
+
+                pre_mac_obs = obs_resp.observation
+                pre_obs_obj = client.to_alpha_observation(pre_mac_obs, step_idx, "pre")
+                pre_state = pre_obs_obj.evidence
+                pre_hash = pre_mac_obs.state_hash
+
+                # 2. FORM ACTION PROPOSAL (Qwen Deliberation)
+                model_proposal, audit_meta = self._deliberate_next_action(
+                    task=task,
+                    current_obs=pre_state,
+                    step_index=step_idx,
+                    recovery_count=recovery_attempts,
+                )
+
+                act_upper = model_proposal.action.upper()
+                if act_upper == "COMPLETE":
+                    verif_resp = client.verify_outcome(
+                        VerifyOutcomeRequest(
+                            task_id=task.task_id,
+                            modality=mac_mod,
+                            app_name=task.window_title or None,
+                            expected_postcondition=task.expected_postcondition,
+                        )
+                    )
+                    v_detail = verif_resp.verification
+                    verif_model = PostActionVerification(
+                        outcome="SUCCESS" if v_detail.postcondition_satisfied else "FAILURE",
+                        state_changed=v_detail.state_changed,
+                        postcondition_satisfied=v_detail.postcondition_satisfied,
+                        verification_status=v_detail.verification_status.value,
+                        note=v_detail.note,
+                        checks=v_detail.checks,
+                    )
+                    trajectory.final_verification = verif_model.model_dump()
+                    trajectory.status = (
+                        "VERIFIED_SUCCESS" if verif_model.postcondition_satisfied else "VERIFIED_FAILURE"
+                    )
+                    trajectory.steps.append(
+                        TrajectoryStepRecord(
+                            step_index=step_idx,
+                            pre_observation_id=pre_obs_obj.observation_id,
+                            pre_state_hash=pre_hash,
+                            model_audit_ref=audit_meta,
+                            action_proposal=model_proposal.model_dump(),
+                            permission_approved=True,
+                            execution_result={"ok": True, "action": "COMPLETE"},
+                            post_observation_id=pre_obs_obj.observation_id,
+                            post_state_hash=pre_hash,
+                            verification=verif_model.model_dump(),
+                            recovery_attempt=recovery_attempts,
+                        )
+                    )
+                    break
+
+                elif act_upper == "ABORT":
+                    verif_model = PostActionVerification(
+                        outcome="FAILURE",
+                        state_changed=False,
+                        postcondition_satisfied=False,
+                        verification_status="FALSIFIED",
+                        note=f"Model aborted task: {model_proposal.rationale}",
+                    )
+                    trajectory.steps.append(
+                        TrajectoryStepRecord(
+                            step_index=step_idx,
+                            pre_observation_id=pre_obs_obj.observation_id,
+                            pre_state_hash=pre_hash,
+                            model_audit_ref=audit_meta,
+                            action_proposal=model_proposal.model_dump(),
+                            permission_approved=True,
+                            execution_result={"ok": False, "action": "ABORT", "error": model_proposal.rationale},
+                            post_observation_id=pre_obs_obj.observation_id,
+                            post_state_hash=pre_hash,
+                            verification=verif_model.model_dump(),
+                            recovery_attempt=recovery_attempts,
+                        )
+                    )
+                    trajectory.final_verification = verif_model.model_dump()
+                    trajectory.status = "VERIFIED_FAILURE"
+                    trajectory.error = f"Model aborted task: {model_proposal.rationale}"
+                    break
+
+                # 3. VALIDATE PERMISSIONS (Legion PermissionGate)
+                permitted, perm_reason = self._check_permission(model_proposal, task)
+                if not permitted:
+                    trajectory.status = "PERMISSION_DENIED"
+                    trajectory.error = f"Permission denied for {model_proposal.action}: {perm_reason}"
+                    trajectory.steps.append(
+                        TrajectoryStepRecord(
+                            step_index=step_idx,
+                            pre_observation_id=pre_obs_obj.observation_id,
+                            pre_state_hash=pre_hash,
+                            model_audit_ref=audit_meta,
+                            action_proposal=model_proposal.model_dump(),
+                            permission_approved=False,
+                            execution_result={"ok": False, "error": perm_reason},
+                            post_observation_id=pre_obs_obj.observation_id,
+                            post_state_hash=pre_hash,
+                            verification={"outcome": "BLOCKED", "note": perm_reason},
+                            recovery_attempt=recovery_attempts,
+                        )
+                    )
+                    break
+
+                # 4. MAP & EXECUTE ACTION ON MAC AGENT
+                if mac_mod == MacModality.BROWSER:
+                    action_map = {
+                        "CLICK": MacActionType.BROWSER_CLICK,
+                        "TYPE": MacActionType.BROWSER_TYPE,
+                        "NAVIGATE": MacActionType.BROWSER_NAVIGATE,
+                        "SCROLL": MacActionType.BROWSER_SCROLL,
+                        "WAIT": MacActionType.WAIT,
+                    }
+                    mac_act_type = action_map.get(act_upper, MacActionType.WAIT)
+                else:
+                    action_map = {
+                        "CLICK": MacActionType.NATIVE_CLICK,
+                        "TYPE": MacActionType.NATIVE_TYPE,
+                        "WAIT": MacActionType.WAIT,
+                    }
+                    mac_act_type = action_map.get(act_upper, MacActionType.WAIT)
+
+                loc = None
+                if model_proposal.target_id and mac_act_type in (
+                    MacActionType.BROWSER_CLICK,
+                    MacActionType.BROWSER_TYPE,
+                    MacActionType.NATIVE_CLICK,
+                    MacActionType.NATIVE_TYPE,
+                ):
+                    loc = SemanticLocator(
+                        by=LocatorStrategy.ELEMENT_ID,
+                        value=model_proposal.target_id,
+                    )
+
+                exec_req = ExecuteActionRequest(
+                    task_id=task.task_id,
+                    modality=mac_mod,
+                    action_type=mac_act_type,
+                    locator=loc,
+                    text=model_proposal.payload if mac_act_type in (MacActionType.BROWSER_TYPE, MacActionType.NATIVE_TYPE) else None,
+                    url=model_proposal.payload if mac_act_type == MacActionType.BROWSER_NAVIGATE else None,
+                    app_name=task.window_title or None,
+                    rationale=model_proposal.rationale,
+                    intended_effect=model_proposal.intended_effect,
+                    expected_postcondition=task.expected_postcondition,
+                    timeout_seconds=task.action_timeout_seconds,
+                )
+                exec_resp = client.execute_action(exec_req)
+
+                # 5. INDEPENDENT POST-OBSERVATION & 6. OUTCOME VERIFICATION
+                post_mac_obs = exec_resp.post_observation or pre_mac_obs
+                post_obs_obj = client.to_alpha_observation(post_mac_obs, step_idx, "post")
+                post_hash = post_mac_obs.state_hash
+
+                v_det = exec_resp.verification
+                verif_status_str = v_det.verification_status.value if v_det else "FALSIFIED"
+                postcond_sat = bool(v_det.postcondition_satisfied) if v_det else False
+                state_chg = bool(v_det.state_changed) if v_det else (pre_hash != post_hash)
+
+                verif_model = PostActionVerification(
+                    outcome="SUCCESS" if (exec_resp.ok and postcond_sat) else ("PARTIAL" if exec_resp.ok and state_chg else "FAILURE"),
+                    state_changed=state_chg,
+                    postcondition_satisfied=postcond_sat,
+                    verification_status=verif_status_str,
+                    note=v_det.note if v_det else (exec_resp.error or ""),
+                    checks=v_det.checks if v_det else {"action_ok": exec_resp.ok},
+                    latency_ms=exec_resp.latency_ms,
+                )
+
+                step_rec = TrajectoryStepRecord(
+                    step_index=step_idx,
+                    pre_observation_id=pre_obs_obj.observation_id,
+                    pre_state_hash=pre_hash,
+                    model_audit_ref=audit_meta,
+                    action_proposal=model_proposal.model_dump(),
+                    permission_approved=(not exec_resp.policy_decision.startswith("DENIED")),
+                    execution_result={
+                        "ok": exec_resp.ok,
+                        "detail": exec_resp.execution_detail,
+                        "error": exec_resp.error,
+                        "error_code": exec_resp.error_code,
+                        "policy_decision": exec_resp.policy_decision,
+                    },
+                    post_observation_id=post_obs_obj.observation_id,
+                    post_state_hash=post_hash,
+                    verification=verif_model.model_dump(),
+                    recovery_attempt=recovery_attempts,
+                )
+                trajectory.steps.append(step_rec)
+
+                if verif_model.postcondition_satisfied:
+                    trajectory.status = "VERIFIED_SUCCESS"
+                    trajectory.final_verification = verif_model.model_dump()
+                    break
+
+                if not exec_resp.ok or not verif_model.state_changed:
+                    if recovery_attempts < task.max_recoveries:
+                        recovery_attempts += 1
+                        trajectory.recovery_count = recovery_attempts
+                    else:
+                        trajectory.status = "VERIFIED_FAILURE"
+                        trajectory.error = exec_resp.error or f"Recovery attempts exhausted ({task.max_recoveries})"
+                        trajectory.final_verification = verif_model.model_dump()
+                        break
+
+            if trajectory.status == "IN_PROGRESS":
+                trajectory.status = "BUDGET_EXHAUSTED"
+
+        except Exception as exc:
+            trajectory.status = "VERIFIED_FAILURE"
+            trajectory.error = f"Mac closed-loop error: {exc}"
+
+        trajectory.ended_at = datetime.now(timezone.utc).isoformat()
+        trajectory.duration_ms = round((time.perf_counter() - t_start) * 1000.0, 2)
+        self._record_to_evidence_graph(trajectory)
+        self._persist_trajectory(trajectory)
+        return trajectory
 
     # =========================================================================
     # BROWSER WORKFLOW LOOP (STAGE 1 & STAGE 2)
