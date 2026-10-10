@@ -605,6 +605,12 @@ class ComputerUseTool(ILayaObservationTool, ILayaResearchTool, ILayaExecutionToo
         )
         return res, obs
 
+    def execute_closed_loop_task(self, task: Any) -> Any:
+        """Executes a bounded, closed-loop computer use task with Qwen reasoning and independent verification."""
+        from alpha.computer_use.closed_loop import LayaClosedLoopRuntime
+        rt = LayaClosedLoopRuntime(workspace_root=self.workspace_root, permission_gate=self.permission_gate)
+        return rt.execute_task(task)
+
     # Contract Implementations
     def get_observation_manifest(self) -> LayaManifest:
         return LayaManifest(

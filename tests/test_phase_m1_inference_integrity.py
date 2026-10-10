@@ -49,7 +49,7 @@ class TestModelInferenceAndFallbackIntegrity:
         assert len(reasoner.audit_log) >= 1
         last_audit = reasoner.audit_log[-1]
         assert last_audit.status == "SUCCESS"
-        assert last_audit.endpoint == "http://127.0.0.1:1234/v1"
+        assert last_audit.endpoint.startswith("http://127.0.0.1:") and last_audit.endpoint.endswith("/v1")
         assert last_audit.latency_ms > 0
 
     def test_02_connection_refusal_when_endpoint_down(self):
@@ -108,7 +108,8 @@ class TestModelInferenceAndFallbackIntegrity:
             reasoner.generate_reasoning("test query")
 
         # Now point back to live endpoint and verify recovery
-        reasoner.endpoint_url = "http://127.0.0.1:1234/v1"
+        from alpha.reasoning.qwen_reasoner import resolve_default_model_endpoint
+        reasoner.endpoint_url = resolve_default_model_endpoint()
         res = reasoner.generate_reasoning("Echo recovery test: return 'RECOVERED'")
         assert isinstance(res, str)
         assert len(res) > 0

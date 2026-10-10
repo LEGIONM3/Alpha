@@ -56,12 +56,15 @@ class OpenAICompatibleClient:
 
     def __init__(
         self,
-        base_url: str = "http://localhost:1234/v1",
+        base_url: Optional[str] = None,
         api_key: str = "not-needed",
-        default_model: str = "gemma-4-e4b-it-ultra-uncensored-heretic",
+        default_model: str = "qwen3.8-9b-heretic-uncensored",
         timeout_seconds: float = 90.0,
         enable_mock_fallback: bool = False
     ):
+        if base_url is None or base_url in ("http://localhost:1234/v1", "http://127.0.0.1:1234/v1"):
+            from alpha.reasoning.qwen_reasoner import resolve_default_model_endpoint
+            base_url = resolve_default_model_endpoint()
         normalized_url = base_url.rstrip("/")
         if "://localhost" in normalized_url:
             normalized_url = normalized_url.replace("://localhost", "://127.0.0.1")
